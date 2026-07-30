@@ -941,21 +941,42 @@
       touch-action:pan-x pan-y;
       -webkit-overflow-scrolling:touch;
     }
-    /*
-      首页新竖图按原始 3:4 比例完整展示。
-      下方额外空间承载标题与入口卡片，避免文字遮住校门主体。
-    */
+    /* 参考沉浸式校园首页：完整竖图、红色渐变、标题与功能卡片叠加。 */
     @media(max-width:699px){
       .hero{
-        min-height:calc(min(133.333vw,693.333px) + 300px);
+        min-height:calc(min(133.333vw,693.333px) + 360px);
+        background-image:
+          linear-gradient(180deg,rgba(17,23,30,.02) 0%,rgba(17,23,30,.06) 42%,rgba(103,19,32,.52) 60%,rgba(113,21,34,.94) 76%,#5b0e1a 100%),
+          var(--hero-image);
         background-size:100% 100%,100% auto;
         background-position:center center,center top;
         background-repeat:no-repeat,no-repeat;
-        background-color:#761824;
+        background-color:#5b0e1a;
+      }
+      .hero:after{height:48%;background:linear-gradient(180deg,transparent,rgba(63,8,17,.42))}
+      .hero-copy{
+        top:clamp(336px,105vw,548px);
+        bottom:auto;
+      }
+      .hero-actions{
+        top:calc(min(133.333vw,693.333px) + 70px);
+        bottom:auto;
+      }
+      #homePage .home-content{
+        position:relative;
+        z-index:4;
+        margin-top:-190px;
+      }
+      #homePage .ai-entry{
+        margin-top:0;
+        background:rgba(255,253,250,.97);
+        box-shadow:0 20px 42px rgba(56,8,16,.28);
       }
     }
     @media(max-width:359px){
-      .hero{min-height:calc(133.333vw + 370px)}
+      .hero{min-height:calc(133.333vw + 430px)}
+      .hero-actions{top:calc(133.333vw + 90px)}
+      #homePage .home-content{margin-top:-205px}
     }
   </style>
   <!-- v2.6.7: added senior opening experience card and modal -->
