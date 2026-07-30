@@ -941,6 +941,22 @@
       touch-action:pan-x pan-y;
       -webkit-overflow-scrolling:touch;
     }
+    /*
+      首页新竖图按原始 3:4 比例完整展示。
+      下方额外空间承载标题与入口卡片，避免文字遮住校门主体。
+    */
+    @media(max-width:699px){
+      .hero{
+        min-height:calc(min(133.333vw,693.333px) + 300px);
+        background-size:100% 100%,100% auto;
+        background-position:center center,center top;
+        background-repeat:no-repeat,no-repeat;
+        background-color:#761824;
+      }
+    }
+    @media(max-width:359px){
+      .hero{min-height:calc(133.333vw + 370px)}
+    }
   </style>
   <!-- v2.6.7: added senior opening experience card and modal -->
 </head>
