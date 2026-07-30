@@ -1,0 +1,2435 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=5">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="format-detection" content="telephone=no,email=no,address=no">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="assets/icons/favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="assets/icons/icon-192.png">
+  <meta name="theme-color" content="#9f1f2d">
+  <meta name="description" content="小7校园AI——广东岭南职业技术学院清远校区新生服务、校园智能知识库与学姐人工核实平台">
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+  <link rel="dns-prefetch" href="//cdn.jsdelivr.net">
+  <link rel="preload" as="image" href="https://cdn.jsdelivr.net/gh/qiyu03340-boop/xiao7-campus@e7052785d9af25bb2dc8cde4701bed7bbf56c369/assets/images/img-001-432950b3c185.webp" fetchpriority="high">
+  <title>小7校园AI｜清远校区新生助手 v2.7.9</title>
+  <style>
+    :root{
+      --hero-image:url("https://cdn.jsdelivr.net/gh/qiyu03340-boop/xiao7-campus@e7052785d9af25bb2dc8cde4701bed7bbf56c369/assets/images/img-001-432950b3c185.webp");
+      --red:#a51f2d;
+      --red-2:#c23a45;
+      --red-dark:#6f1420;
+      --cream:#f8f3ef;
+      --paper:#fffdfb;
+      --ink:#251c1c;
+      --muted:#837778;
+      --line:#eadfda;
+      --green:#56a76c;
+      --gold:#d6a65b;
+      --shadow:0 14px 36px rgba(77,28,31,.13);
+      --nav-h:74px;
+    }
+    *{box-sizing:border-box}
+    html{background:#e9e5e2}
+    body{
+      margin:0;
+      font-family:Inter,"PingFang SC","Microsoft YaHei",system-ui,-apple-system,sans-serif;
+      color:var(--ink);
+      background:#e9e5e2;
+      min-height:100vh;
+    }
+    button,input{font:inherit}
+    button{cursor:pointer}
+    .app-shell{
+      width:min(100%,520px);
+      min-height:100dvh;
+      margin:0 auto;
+      background:var(--cream);
+      position:relative;
+      overflow-x:hidden;
+      box-shadow:0 0 50px rgba(43,29,29,.12);
+    }
+    .page{
+      display:none;
+      min-height:100dvh;
+      padding-bottom:calc(var(--nav-h) + env(safe-area-inset-bottom) + 18px);
+    }
+    .page.active{display:block}
+    .hero{
+      min-height:570px;
+      position:relative;
+      padding:18px 22px 116px;
+      color:#fff;
+      background-image:
+        linear-gradient(180deg,rgba(17,23,30,.12) 0%,rgba(30,20,24,.02) 42%,rgba(74,13,22,.84) 78%,#761824 100%),
+        var(--hero-image);
+      background-size:cover;
+      background-position:center center;
+      overflow:hidden;
+    }
+    .hero:after{
+      content:"";
+      position:absolute;
+      inset:auto 0 0;
+      height:180px;
+      background:linear-gradient(180deg,transparent,rgba(68,9,18,.86));
+      pointer-events:none;
+    }
+    .hero-top{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      position:relative;
+      z-index:2;
+    }
+    .logo-lockup{display:flex;align-items:center;gap:10px}
+    .logo-mark{
+      width:43px;height:43px;border-radius:15px;
+      display:grid;place-items:center;
+      background:rgba(255,255,255,.93);
+      color:var(--red);font-weight:900;font-size:21px;
+      box-shadow:0 10px 28px rgba(34,10,13,.18);
+    }
+    .logo-copy strong{display:block;font-size:18px;letter-spacing:.5px}
+    .logo-copy small{opacity:.82;font-size:11px}
+    .icon-circle{
+      width:42px;height:42px;border:1px solid rgba(255,255,255,.38);
+      border-radius:50%;background:rgba(40,13,18,.24);color:#fff;
+      display:grid;place-items:center;backdrop-filter:blur(12px);
+    }
+    .hero-copy{
+      position:absolute;left:24px;right:24px;bottom:132px;z-index:2;
+    }
+    .tag-row{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}
+    .hero-tag{
+      padding:6px 10px;border-radius:999px;
+      background:rgba(161,24,42,.88);border:1px solid rgba(255,255,255,.22);
+      font-size:12px;font-weight:750;
+    }
+    .hero-tag.light{background:rgba(255,255,255,.18);backdrop-filter:blur(8px)}
+    .hero h1{font-size:35px;line-height:1.14;margin:0 0 10px;letter-spacing:-.8px}
+    .hero p{margin:0;line-height:1.7;font-size:14px;opacity:.9}
+    .hero-pill{
+      display:inline-flex;align-items:center;gap:7px;
+      margin-top:16px;padding:8px 12px;border:1px solid rgba(255,255,255,.28);
+      border-radius:999px;background:rgba(48,9,15,.24);font-size:12px;
+      backdrop-filter:blur(10px);
+    }
+    .hero-actions{
+      position:absolute;left:20px;right:20px;bottom:22px;z-index:3;
+      display:grid;grid-template-columns:1fr 1fr;gap:12px;
+    }
+    .hero-action{
+      border:0;border-radius:22px;text-decoration:none;background:rgba(255,250,247,.96);
+      padding:17px 16px;display:flex;align-items:center;gap:13px;text-align:left;
+      color:var(--ink);box-shadow:0 16px 30px rgba(45,9,14,.2);
+    }
+    .hero-action .i{
+      width:46px;height:46px;border-radius:16px;display:grid;place-items:center;
+      background:linear-gradient(145deg,#b72635,#941724);color:#fff;font-size:22px;flex:0 0 auto;
+    }
+    .hero-action strong{display:block;font-size:15px}
+    .hero-action small{color:var(--muted);font-size:11px}
+    .hero-action .arrow{margin-left:auto;color:#a89b9c;font-size:22px}
+    .home-content{padding:0 18px 22px}
+    .ai-entry{
+      margin-top:16px;background:var(--paper);border:1px solid rgba(165,31,45,.12);
+      border-radius:24px;padding:18px;box-shadow:var(--shadow);
+    }
+    .card-head{display:flex;align-items:center;gap:12px;margin-bottom:14px}
+    .ai-avatar{
+      width:46px;height:46px;border-radius:16px;display:grid;place-items:center;
+      color:#fff;font-weight:900;background:linear-gradient(145deg,#b82a39,#8d1321);
+      box-shadow:0 9px 20px rgba(145,24,37,.23);
+    }
+    .card-head strong{display:block;font-size:17px}
+    .card-head small{color:var(--muted)}
+    .online{margin-left:auto;color:var(--green);font-size:12px}
+    .ask-bar{
+      display:grid;grid-template-columns:1fr 52px;gap:9px;padding:6px;
+      border:1px solid var(--line);border-radius:18px;background:#fff;
+    }
+    .ask-bar input{border:0;outline:0;background:transparent;padding:9px 10px;min-width:0;color:var(--ink)}
+    .ask-bar button{
+      border:0;border-radius:14px;background:var(--red);color:#fff;font-size:23px;
+      display:grid;place-items:center;
+    }
+    .quick-chips{display:flex;gap:8px;overflow:auto;padding-top:12px;scrollbar-width:none}
+    .quick-chips::-webkit-scrollbar{display:none}
+    .chip{
+      flex:0 0 auto;border:1px solid #e5d5d5;background:#fff8f5;color:#805b5e;
+      padding:8px 11px;border-radius:999px;font-size:12px;
+    }
+    .section{margin-top:22px}
+    .section-title{display:flex;align-items:end;justify-content:space-between;margin:0 3px 13px}
+    .section-title h2{margin:0;font-size:19px}
+    .section-title span{font-size:12px;color:var(--muted)}
+    .service-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+    .service-item{
+      border:0;background:var(--paper);border-radius:18px;padding:14px 6px 12px;text-align:center;
+      color:var(--ink);box-shadow:0 8px 18px rgba(77,40,39,.07);
+    }
+    .service-item .sicon{
+      width:43px;height:43px;border-radius:15px;margin:0 auto 8px;
+      display:grid;place-items:center;font-size:20px;
+      background:#f4e8e5;color:var(--red);
+    }
+    .service-item span{font-size:12px;white-space:nowrap}
+    .notice-card{
+      border-radius:22px;padding:18px;background:linear-gradient(135deg,#fff9f5,#f4e6df);
+      border:1px solid #ebdad3;display:flex;gap:14px;align-items:center;
+    }
+    .notice-card .date{
+      width:58px;height:58px;border-radius:18px;background:var(--red);color:#fff;
+      display:grid;place-items:center;text-align:center;font-weight:850;line-height:1.1;flex:0 0 auto;
+    }
+    .notice-card strong{font-size:15px}
+    .notice-card p{font-size:12px;color:var(--muted);margin:5px 0 0;line-height:1.55}
+    .page-header{
+      position:sticky;top:0;z-index:20;
+      display:flex;align-items:center;justify-content:space-between;
+      padding:18px 20px 14px;background:rgba(248,243,239,.94);
+      backdrop-filter:blur(16px);border-bottom:1px solid rgba(230,216,210,.8);
+    }
+    .page-header h1{font-size:21px;margin:0}
+    .page-header small{display:block;color:var(--muted);margin-top:3px}
+    .header-badge{padding:8px 11px;border-radius:999px;background:#f0dfdc;color:var(--red);font-size:11px;font-weight:800}
+    .page-pad{padding:18px}
+    .countdown{
+      background:linear-gradient(135deg,#941724,#c54751);color:#fff;border-radius:25px;
+      padding:22px;box-shadow:var(--shadow);overflow:hidden;position:relative;
+    }
+    .countdown:after{
+      content:"";position:absolute;width:180px;height:180px;border-radius:50%;
+      background:rgba(255,255,255,.08);right:-70px;top:-90px;
+    }
+    .countdown small{opacity:.84}
+    .countdown strong{display:block;font-size:37px;margin:8px 0 3px}
+    .countdown p{margin:0;font-size:13px;opacity:.9}
+    .guide-block{margin-top:18px;background:var(--paper);border-radius:22px;padding:18px;box-shadow:0 9px 22px rgba(70,35,34,.07)}
+    .guide-block h3{margin:0 0 14px;font-size:17px}
+    .check-list{display:grid;gap:10px}
+    .check-row{
+      display:flex;align-items:flex-start;gap:11px;padding:12px;border-radius:15px;background:#fbf7f4;
+    }
+    .check-row input{accent-color:var(--red);width:18px;height:18px;margin-top:1px}
+    .check-row strong{font-size:14px;display:block}
+    .check-row small{font-size:11px;color:var(--muted);line-height:1.5}
+    .timeline{display:grid;gap:11px}
+    .timeline-item{display:grid;grid-template-columns:39px 1fr;gap:12px;align-items:start}
+    .timeline-num{
+      width:36px;height:36px;border-radius:13px;background:#f2dedc;color:var(--red);
+      display:grid;place-items:center;font-weight:900;
+    }
+    .timeline-item strong{font-size:14px}
+    .timeline-item p{margin:4px 0 0;color:var(--muted);font-size:12px;line-height:1.55}
+
+    /* 新生指南：资料目录式移动端页面 */
+    .guide-page{
+      background:
+        radial-gradient(circle at 100% 0,rgba(207,166,87,.11),transparent 260px),
+        linear-gradient(180deg,#fffaf0 0%,#faf5ea 100%);
+    }
+    .guide-page .page-header{
+      background:rgba(255,250,240,.94);
+    }
+    .guide-canvas{padding:18px 17px 30px}
+    .guide-search{
+      display:grid;grid-template-columns:39px 1fr 34px;align-items:center;gap:7px;
+      min-height:62px;padding:8px 12px;border:1px solid #e4ddd2;border-radius:23px;
+      background:#fff;box-shadow:0 9px 22px rgba(95,65,47,.06);
+    }
+    .guide-search .search-icon{
+      width:35px;height:35px;display:grid;place-items:center;color:#9b9290;font-size:22px;
+    }
+    .guide-search input{
+      min-width:0;border:0;outline:0;background:transparent;color:var(--ink);font-size:14px;
+    }
+    .guide-search input::placeholder{color:#aaa09d}
+    .guide-search button{
+      border:0;background:#f4e6e2;color:var(--red);width:34px;height:34px;border-radius:12px;
+      display:grid;place-items:center;font-weight:900;
+    }
+    .guide-filters{display:flex;gap:9px;overflow:auto;padding:13px 1px 5px;scrollbar-width:none}
+    .guide-filters::-webkit-scrollbar{display:none}
+    .guide-filter{
+      flex:0 0 auto;border:1px solid #ded7cc;background:#fff;color:#817878;
+      padding:9px 17px;border-radius:999px;font-size:12px;
+    }
+    .guide-filter.active{
+      background:linear-gradient(135deg,#b42131,#941724);border-color:transparent;color:#fff;
+      box-shadow:0 8px 18px rgba(154,24,36,.18);
+    }
+    .guide-overview{
+      margin-top:16px;padding:20px;border-radius:24px;
+      background:linear-gradient(135deg,#fff9f7 0%,#f8e5e4 100%);
+      border:1px solid #e5c9c8;box-shadow:0 10px 25px rgba(111,44,43,.06);
+      display:grid;grid-template-columns:1fr auto;gap:12px;align-items:center;
+    }
+    .guide-eyebrow{
+      color:var(--red);font-size:10px;font-weight:900;letter-spacing:1.5px;text-transform:uppercase;
+    }
+    .guide-overview h2{font-size:22px;margin:6px 0 4px}
+    .guide-overview p{margin:0;color:#8a7979;font-size:11px;line-height:1.55}
+    .guide-stats{display:flex;gap:8px}
+    .guide-stat{
+      min-width:68px;padding:11px 8px;border-radius:17px;background:rgba(255,255,255,.83);
+      text-align:center;color:var(--red);box-shadow:0 5px 12px rgba(102,46,46,.05);
+    }
+    .guide-stat strong{display:block;font-size:21px;line-height:1}
+    .guide-stat span{display:block;margin-top:4px;color:#8e7e7e;font-size:9px}
+    .guide-section{margin-top:28px}
+    .guide-title-row{display:flex;align-items:end;justify-content:space-between;gap:12px;margin-bottom:14px}
+    .guide-title-row h2{margin:4px 0 0;font-size:25px;line-height:1.15;letter-spacing:-.4px}
+    .guide-title-row small{
+      flex:0 0 auto;padding:7px 10px;border-radius:999px;background:#fff3d8;color:#9b7a37;font-size:10px;
+    }
+    .journey-list{display:grid;gap:12px}
+    .journey-card{
+      border:1px solid #e5ddd2;background:#fff;border-radius:23px;min-height:106px;padding:0;
+      display:grid;grid-template-columns:66px 1fr 26px;align-items:center;overflow:hidden;text-align:left;
+      color:var(--ink);box-shadow:0 8px 20px rgba(91,63,48,.055);
+    }
+    .journey-num{
+      align-self:stretch;display:grid;place-items:center;
+      background:linear-gradient(180deg,#c32132,#a31525);color:#fff;font-weight:900;font-size:13px;
+    }
+    .journey-copy{display:flex;align-items:center;gap:13px;padding:16px 13px}
+    .journey-icon{
+      width:48px;height:48px;border-radius:16px;background:#f7e3e1;color:var(--red);
+      display:grid;place-items:center;font-size:22px;flex:0 0 auto;
+    }
+    .journey-copy strong{display:block;font-size:16px}
+    .journey-copy small{display:block;margin-top:3px;color:#9a8f8b;font-size:11px}
+    .journey-arrow{color:#aaa29c;font-size:22px}
+    .topic-grid{display:grid;grid-template-columns:1fr 1fr;gap:11px}
+    .topic-card{
+      border:1px solid #e5ded3;background:#fff;border-radius:22px;min-height:113px;
+      padding:14px 13px;display:grid;grid-template-columns:48px 1fr 18px;gap:10px;
+      align-items:center;text-align:left;color:var(--ink);box-shadow:0 7px 18px rgba(88,62,48,.045);
+    }
+    .topic-icon{
+      width:48px;height:48px;border-radius:16px;background:#f8e4e2;color:var(--red);
+      display:grid;place-items:center;font-size:21px;
+    }
+    .topic-copy strong{display:block;font-size:14px;line-height:1.35}
+    .topic-copy small{display:block;color:#a09792;font-size:9px;margin-top:4px;line-height:1.45}
+    .topic-arrow{color:#aaa39e;font-size:19px}
+    .topic-card.is-pending .topic-icon{background:#f4efe9;color:#a9967e}
+    .topic-card[hidden],.journey-card[hidden]{display:none!important}
+    .guide-empty{
+      display:none;margin-top:14px;padding:22px;border-radius:20px;background:#fff;
+      text-align:center;color:#938884;font-size:12px;border:1px dashed #ddd3c8;
+    }
+    .guide-empty.show{display:block}
+    .gallery-card{
+      border-radius:25px;overflow:hidden;background:#fff;border:1px solid #e4dbd0;
+      box-shadow:0 9px 22px rgba(91,62,47,.07);
+    }
+    .gallery-photo{
+      height:205px;background-size:cover;background-position:center;position:relative;
+    }
+    .gallery-photo:after{
+      content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent 45%,rgba(60,18,21,.72));
+    }
+    .gallery-photo span{
+      position:absolute;left:15px;bottom:14px;z-index:2;color:#fff;font-weight:800;font-size:15px;
+    }
+    .gallery-copy{padding:15px;display:flex;align-items:center;justify-content:space-between;gap:12px}
+    .gallery-copy strong{display:block;font-size:14px}
+    .gallery-copy small{display:block;color:#958a86;font-size:10px;margin-top:3px}
+    .gallery-copy a{
+      flex:0 0 auto;text-decoration:none;padding:9px 12px;border-radius:12px;
+      background:var(--red);color:#fff;font-size:11px;font-weight:800;
+    }
+    .campus-gallery-stack{display:grid;gap:14px;margin-top:14px}
+    .campus-grid{display:grid;grid-template-columns:1fr;gap:12px}
+    .campus-card{background:#fff;border:1px solid #e6ddd3;border-radius:22px;overflow:hidden;box-shadow:0 7px 18px rgba(88,62,48,.05)}
+    .campus-card img{display:block;width:100%;height:195px;object-fit:cover;background:#f5f1ed}
+    .campus-card-body{padding:13px 14px 14px}
+    .campus-card-head{display:flex;align-items:flex-start;justify-content:space-between;gap:10px}
+    .campus-card h3{margin:0;font-size:14px;line-height:1.4;color:var(--ink)}
+    .campus-card p{margin:4px 0 0;font-size:11px;line-height:1.6;color:#8c7f7a}
+    .campus-index{flex:0 0 auto;display:inline-grid;place-items:center;min-width:26px;height:26px;padding:0 7px;border-radius:999px;background:#f8e4e2;color:var(--red);font-size:11px;font-weight:800}
+    .campus-tips{padding:14px 15px;border-radius:20px;background:#fff6f5;border:1px dashed #e7c8c4;color:#9c6f71;font-size:11px;line-height:1.7}
+    @media(min-width:700px){.campus-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+    @media(max-width:370px){
+      .guide-overview{grid-template-columns:1fr}
+      .guide-stats{justify-content:flex-start}
+      .topic-grid{gap:8px}
+      .topic-card{padding:11px 9px;grid-template-columns:42px 1fr 14px}
+      .topic-icon{width:42px;height:42px}
+      .topic-copy strong{font-size:13px}
+    }
+
+    #aiPage{
+      height:100dvh;overflow:hidden;padding-bottom:calc(var(--nav-h) + env(safe-area-inset-bottom));
+      background:#f5efeb;
+    }
+    .ai-layout{
+      height:calc(100dvh - var(--nav-h) - env(safe-area-inset-bottom));
+      display:flex;flex-direction:column;
+    }
+    .ai-top{
+      min-height:72px;padding:12px 14px;background:linear-gradient(135deg,#881621,#b72d3b);color:#fff;
+      display:flex;align-items:center;gap:10px;flex:0 0 auto;
+      box-shadow:0 6px 18px rgba(91,15,27,.14);position:relative;z-index:2;
+    }
+    .ai-top .ai-avatar{
+      width:44px;height:44px;border-radius:14px;background:#fff;color:var(--red);box-shadow:none;
+      flex:0 0 auto;font-size:14px;
+    }
+    .ai-identity{min-width:0;flex:1}
+    .ai-top strong{
+      display:block;font-size:16px;line-height:1.25;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+    }
+    .ai-top small{
+      display:block;margin-top:3px;opacity:.82;font-size:10.5px;line-height:1.35;
+      white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+    }
+    .ai-top .status{
+      margin-left:auto;flex:0 0 auto;display:inline-flex;align-items:center;white-space:nowrap;
+      padding:6px 8px;border-radius:999px;background:rgba(255,255,255,.14);
+      border:1px solid rgba(255,255,255,.2);font-size:10px;font-weight:750;
+    }
+    .chat-scroll{
+      flex:1;min-height:0;overflow-y:auto;padding:14px 14px 20px;
+      overscroll-behavior:contain;scroll-behavior:smooth;scroll-padding:10px 0 18px;
+    }
+    .msg{display:flex;margin-bottom:12px;scroll-margin-top:10px}
+    .msg.user{justify-content:flex-end}
+    .bubble{
+      max-width:88%;padding:12px 14px;border-radius:17px;line-height:1.7;font-size:14px;
+      box-shadow:0 4px 12px rgba(66,38,38,.05);
+    }
+    .msg.assistant .bubble{background:#fff;border-top-left-radius:6px}
+    .msg.user .bubble{background:var(--red);color:#fff;border-top-right-radius:6px}
+    .welcome-bubble strong{display:block;margin-bottom:4px}
+    .answer-card{padding:0!important;overflow:hidden;width:min(100%,430px);max-width:none!important}
+    .answer-head{
+      padding:14px;background:#fff9f5;display:grid;gap:8px;align-items:start;
+      border-bottom:1px solid #eee0db;
+    }
+    .answer-head h3{font-size:16px;margin:0;line-height:1.42;letter-spacing:-.01em}
+    .status-tag{
+      margin:0;justify-self:start;max-width:100%;padding:5px 8px;border-radius:999px;
+      background:#e9f5ec;color:#438856;font-size:10px;font-weight:800;line-height:1.35;
+      white-space:normal;
+    }
+    .answer-content{padding:14px;background:#fff}
+    .answer-content.collapsed{display:none}
+    .answer-summary{margin:0 0 11px;font-size:13px;line-height:1.7}
+    .facts{display:grid;gap:7px}
+    .fact{
+      display:grid;grid-template-columns:84px 1fr;gap:7px;padding:9px 10px;border-radius:12px;background:#f8f3f0;
+      font-size:12px;line-height:1.55;
+    }
+    .fact span:first-child{color:var(--muted)}
+    .answer-tips{margin:11px 0 0;padding-left:18px;color:#655b5b;font-size:12px;line-height:1.7}
+    .answer-meta{margin-top:11px;padding-top:10px;border-top:1px solid #eee5e0;color:#958788;font-size:10px;line-height:1.6}
+    .answer-actions{display:flex;gap:7px;flex-wrap:wrap;margin-top:10px}
+    .feedback-notice{margin-top:8px;padding:9px 10px;border:1px solid #eadbd7;border-radius:10px;background:#fff8f5;color:#806d6d;font-size:10px;line-height:1.55}
+    .feedback-notice[hidden]{display:none}
+    .answer-actions button,.collapse-btn{
+      border:1px solid #eadbd7;background:#fff;color:#776667;padding:7px 9px;border-radius:10px;font-size:10px;
+    }
+    .collapse-btn{margin:0 14px 12px;align-self:flex-start}
+    .typing{display:inline-flex;gap:4px}
+    .typing i{width:6px;height:6px;border-radius:50%;background:#aa9999;animation:jump 1s infinite}
+    .typing i:nth-child(2){animation-delay:.15s}.typing i:nth-child(3){animation-delay:.3s}
+    @keyframes jump{0%,60%,100%{transform:translateY(0)}30%{transform:translateY(-5px)}}
+    .ai-quick{
+      display:flex;gap:7px;overflow-x:auto;padding:8px 12px 12px;background:transparent;
+      scrollbar-width:none;scroll-snap-type:x proximity;overscroll-behavior-x:contain;
+    }
+    .ai-quick::-webkit-scrollbar{display:none}
+    .ai-input{
+      display:grid;grid-template-columns:1fr 44px;gap:8px;padding:8px 12px 9px;
+      background:rgba(255,255,255,.98);border-top:1px solid #eadfd9;flex:0 0 auto;
+      box-shadow:0 -5px 18px rgba(65,38,36,.04);
+    }
+    .ai-input input{
+      min-width:0;min-height:48px;border:1px solid #e1d4cf;border-radius:17px;padding:10px 13px;
+      outline:0;background:#fff;color:var(--ink);
+    }
+    .ai-input input:focus{border-color:#c9979c;box-shadow:0 0 0 3px rgba(165,31,45,.08)}
+    .ai-input button{
+      width:44px;height:48px;min-width:44px;min-height:48px;border:0;border-radius:16px;
+      background:var(--red);color:#fff;font-size:18px;display:grid;place-items:center;
+      box-shadow:0 7px 16px rgba(165,31,45,.18);
+    }
+    .service-list{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+    .service-card{
+      border:0;background:var(--paper);border-radius:21px;padding:18px;text-align:left;
+      box-shadow:0 8px 22px rgba(68,35,35,.07);min-height:138px;
+    }
+    .service-card .big-icon{
+      width:47px;height:47px;border-radius:16px;background:#f2dfdc;color:var(--red);
+      display:grid;place-items:center;font-size:22px;margin-bottom:18px;
+    }
+    .service-card strong{font-size:15px;display:block}
+    .service-card small{font-size:11px;color:var(--muted);line-height:1.45}
+    .service-card .big-icon .ui-icon{width:24px;height:24px}
+    .service-list-three .service-card strong{line-height:1.45}
+    #serviceModal.group-qr .sheet{max-width:520px}
+    #serviceModal.group-qr .detail-gallery{grid-template-columns:1fr;max-width:410px;margin:14px auto 0}
+    #serviceModal.group-qr .detail-photo img{aspect-ratio:auto;object-fit:contain;padding:12px;background:#fff}
+    #serviceModal.group-qr .detail-photo figcaption{text-align:center}
+    .map-preview{
+      margin-top:15px;border-radius:23px;overflow:hidden;position:relative;height:230px;
+      background-image:linear-gradient(180deg,rgba(35,19,21,.05),rgba(72,10,18,.78)),var(--hero-image);
+      background-size:cover;background-position:center;
+      box-shadow:var(--shadow);
+    }
+    .map-preview .map-copy{position:absolute;left:18px;right:18px;bottom:17px;color:#fff}
+    .map-preview h3{margin:0 0 5px;font-size:20px}
+    .map-preview p{margin:0;font-size:12px;opacity:.85}
+    .map-preview button{margin-top:11px;border:0;border-radius:12px;padding:9px 12px;background:#fff;color:var(--red);font-weight:800}
+    .profile-card{
+      background:linear-gradient(135deg,#8d1421,#be3a46);color:#fff;border-radius:25px;padding:22px;
+      display:flex;align-items:center;gap:14px;box-shadow:var(--shadow);
+    }
+    .profile-card .ai-avatar{background:#fff;color:var(--red);box-shadow:none}
+    .profile-card strong{display:block;font-size:18px}
+    .profile-card small{opacity:.8}
+    .qr-card{margin-top:17px;background:var(--paper);border-radius:24px;padding:18px;text-align:center;box-shadow:0 9px 24px rgba(74,37,36,.08)}
+    .qr-card h3{margin:0 0 5px}
+    .qr-card p{font-size:12px;color:var(--muted);margin:0 0 14px;line-height:1.55}
+    .qr-card img{width:min(100%,330px);border-radius:18px;display:block;margin:auto}
+    .disclaimer{
+      margin-top:16px;padding:14px;border-radius:16px;background:#fff7e8;color:#876d38;
+      font-size:11px;line-height:1.65;
+    }
+    .bottom-nav{
+      position:fixed;left:50%;bottom:0;transform:translateX(-50%);
+      width:min(100%,520px);height:calc(var(--nav-h) + env(safe-area-inset-bottom));
+      padding:8px 8px env(safe-area-inset-bottom);
+      background:rgba(255,255,255,.97);border-top:1px solid #e7dcd7;
+      display:grid;grid-template-columns:repeat(5,1fr);z-index:80;backdrop-filter:blur(15px);
+    }
+    .nav-btn{
+      border:0;background:transparent;color:#908687;display:flex;flex-direction:column;align-items:center;
+      justify-content:center;gap:4px;font-size:10px;border-radius:14px;
+    }
+    .nav-btn .nav-ico{font-size:21px;line-height:1}
+    .nav-btn.active{color:var(--red);font-weight:850}
+    .modal{
+      position:fixed;inset:0;z-index:100;background:rgba(35,18,20,.55);
+      display:none;align-items:flex-end;justify-content:center;backdrop-filter:blur(5px);
+    }
+    .modal.show{display:flex}
+    .sheet{
+      width:min(100%,520px);max-height:82dvh;overflow:auto;background:#fffdfb;
+      border-radius:28px 28px 0 0;padding:20px 18px calc(24px + env(safe-area-inset-bottom));
+      box-shadow:0 -20px 50px rgba(41,21,23,.2);
+    }
+    .sheet-handle{width:42px;height:5px;border-radius:999px;background:#ddd1cd;margin:0 auto 16px}
+    .sheet-head{display:flex;justify-content:space-between;gap:10px;align-items:flex-start}
+    .sheet-head h2{font-size:21px;margin:0}
+    .sheet-head p{font-size:12px;color:var(--muted);line-height:1.5;margin:5px 0 0}
+    .close{border:0;width:34px;height:34px;border-radius:50%;background:#f2e9e5;color:#765e61}
+    .detail-list{display:grid;gap:10px;margin-top:16px}
+    .detail{
+      background:#faf5f2;border:1px solid #eee2dd;border-radius:16px;padding:13px;
+    }
+    .detail strong{font-size:13px}
+    .detail p,.detail li{font-size:12px;color:#6f6465;line-height:1.65}
+    .detail p{margin:5px 0 0}.detail ul{margin:6px 0 0;padding-left:19px}
+    .detail-gallery{display:grid;gap:10px;margin-top:10px}
+    .detail-photo{margin:0;overflow:hidden;border-radius:16px;background:#fff;border:1px solid #eadfdb;box-shadow:0 6px 16px rgba(87,58,49,.04)}
+    .detail-photo img{display:block;width:100%;height:auto;aspect-ratio:4/3;object-fit:cover;background:#f7f2ef}
+    .detail-photo figcaption{padding:10px 11px 12px}
+    .detail-photo b{display:block;font-size:12px;color:#423637;line-height:1.4}
+    .detail-photo span{display:block;margin-top:4px;font-size:11px;color:#7c6f70;line-height:1.55}
+    .source-note{margin-top:13px;font-size:10px;color:#9a8c8d;line-height:1.6}
+    @media (min-width:700px){
+      .app-shell{margin:18px auto;min-height:calc(100dvh - 36px);border-radius:28px;overflow:hidden}
+      .bottom-nav{bottom:18px;border-radius:0 0 28px 28px}
+      .page{min-height:calc(100dvh - 36px)}
+      #aiPage{height:calc(100dvh - 36px)}
+      .ai-layout{height:calc(100dvh - 36px - var(--nav-h))}
+      .modal{align-items:center}
+      .sheet{border-radius:28px;max-height:78dvh}
+    }
+    @media(max-width:390px){
+      .hero{min-height:545px;padding-inline:16px}
+      .hero h1{font-size:31px}
+      .hero-actions{left:14px;right:14px}
+      .hero-action{padding:14px 12px}
+      .hero-action .i{width:41px;height:41px}
+      .home-content{padding-inline:13px}
+      .service-grid{gap:7px}
+      .service-item span{font-size:11px}
+    }
+  
+
+    /* v2.4.0 — 分类指南保持原样，校园实景图集独立置于其下 */
+    .campus-count-pill{display:inline-flex;align-items:center;justify-content:center;padding:7px 12px;border-radius:999px;background:#fff2dc;color:#9d7b43;font-size:11px;font-weight:700;white-space:nowrap}
+    .campus-preview-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+    .campus-preview-grid.is-three .campus-preview-card:last-child{grid-column:1/-1;aspect-ratio:2.05}
+    @media(min-width:700px){.campus-preview-grid.is-three{grid-template-columns:repeat(3,minmax(0,1fr))}.campus-preview-grid.is-three .campus-preview-card:last-child{grid-column:auto;aspect-ratio:.82}}
+    .campus-preview-card{position:relative;min-width:0;aspect-ratio:.82;border-radius:22px;overflow:hidden;background:#ddd;box-shadow:0 8px 20px rgba(80,52,42,.08)}
+    .campus-preview-card img{width:100%;height:100%;display:block;object-fit:cover}
+    .campus-preview-card:after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(15,10,8,.02) 35%,rgba(28,15,14,.82) 100%)}
+    .campus-preview-copy{position:absolute;left:13px;right:12px;bottom:13px;z-index:2;color:#fff}
+    .campus-preview-tag{display:inline-flex;padding:5px 9px;border-radius:999px;background:var(--red);font-size:10px;font-weight:800;margin-bottom:7px}
+    .campus-preview-copy strong{display:block;font-size:14px;line-height:1.35}
+    .campus-preview-copy small{display:block;margin-top:3px;font-size:9px;line-height:1.45;color:rgba(255,255,255,.78)}
+    .campus-browse-btn{width:100%;min-height:64px;border:1px solid #e1d7cd;border-radius:22px;background:#fff;color:var(--red);display:flex;align-items:center;justify-content:center;gap:12px;font-size:13px;font-weight:800;box-shadow:0 6px 16px rgba(88,62,48,.035);cursor:pointer}
+    .campus-browse-arrow{font-size:25px;line-height:1;transition:transform .22s ease}
+    .campus-browse-btn[aria-expanded="true"] .campus-browse-arrow{transform:rotate(90deg)}
+    .campus-gallery-expanded[hidden]{display:none!important}
+    .campus-gallery-expanded{padding-top:2px}
+    .campus-v239 .campus-preview-action{border:0;padding:0;text-align:left;cursor:pointer;font:inherit;width:100%}
+    .campus-v239 .campus-preview-action:focus-visible,.campus-v239 .campus-photo-card:focus-visible,.campus-v239 .campus-filter-chip:focus-visible,.campus-lightbox-close:focus-visible{outline:3px solid rgba(151,24,35,.28);outline-offset:3px}
+    .campus-filter-head{display:flex;align-items:flex-end;justify-content:space-between;gap:12px;margin:2px 0 12px}
+    .campus-filter-head strong{display:block;font-size:14px;color:var(--ink)}
+    .campus-filter-head small{display:block;margin-top:3px;font-size:10px;color:#9a8d87}
+    .campus-view-hint{font-size:9px;color:#a49690;white-space:nowrap}
+    .campus-filter-bar{display:flex;gap:8px;overflow-x:auto;padding:1px 1px 10px;scrollbar-width:none}
+    .campus-filter-bar::-webkit-scrollbar{display:none}
+    .campus-filter-chip{flex:0 0 auto;border:1px solid #e4dad0;background:#fff;color:#756a65;border-radius:999px;padding:9px 12px;font-size:11px;font-weight:800;cursor:pointer}
+    .campus-filter-chip span{margin-left:3px;color:#ab9e98;font-size:9px}
+    .campus-filter-chip.active{background:var(--red);border-color:var(--red);color:#fff;box-shadow:0 6px 14px rgba(151,24,35,.18)}
+    .campus-filter-chip.active span{color:rgba(255,255,255,.75)}
+    .campus-v239 .campus-grid{display:grid;grid-template-columns:1fr;gap:12px}
+    .campus-photo-card{position:relative;width:100%;height:184px;padding:0;border:0;border-radius:22px;overflow:hidden;background:#ddd;box-shadow:0 8px 20px rgba(75,48,40,.08);cursor:pointer;text-align:left;font:inherit}
+    .campus-photo-card[hidden]{display:none!important}
+    .campus-photo-card img{display:block;width:100%;height:100%;object-fit:cover;object-position:center;transition:transform .35s ease}
+    .campus-photo-card:hover img{transform:scale(1.025)}
+    .campus-photo-shade{position:absolute;inset:0;background:linear-gradient(180deg,rgba(18,10,8,.02) 32%,rgba(23,12,12,.2) 57%,rgba(29,14,15,.88) 100%)}
+    .campus-photo-copy{position:absolute;left:15px;right:48px;bottom:14px;z-index:2;color:#fff}
+    .campus-photo-tag{display:inline-flex;align-items:center;min-height:24px;padding:0 9px;margin-bottom:7px;border-radius:999px;background:var(--red);font-size:9px;font-weight:800;letter-spacing:.02em}
+    .campus-photo-copy strong{display:block;font-size:17px;line-height:1.25;text-shadow:0 2px 10px rgba(0,0,0,.2)}
+    .campus-photo-copy small{display:block;margin-top:4px;font-size:10px;line-height:1.5;color:rgba(255,255,255,.78)}
+    .campus-photo-zoom{position:absolute;right:14px;bottom:14px;z-index:2;width:30px;height:30px;border-radius:50%;display:grid;place-items:center;background:rgba(255,255,255,.17);border:1px solid rgba(255,255,255,.28);color:#fff;font-size:17px;backdrop-filter:blur(7px)}
+    .campus-lightbox[hidden]{display:none!important}
+    .campus-lightbox{position:fixed;inset:0;z-index:9999;background:rgba(17,11,11,.94);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:64px 16px 34px}
+    .campus-lightbox-stage{width:min(100%,780px);height:min(72vh,760px);display:flex;align-items:center;justify-content:center}
+    .campus-lightbox img{display:block;max-width:100%;max-height:100%;object-fit:contain;border-radius:16px;box-shadow:0 22px 70px rgba(0,0,0,.45)}
+    .campus-lightbox-close{position:absolute;top:max(18px,env(safe-area-inset-top));right:18px;width:42px;height:42px;border:1px solid rgba(255,255,255,.18);border-radius:50%;background:rgba(255,255,255,.12);color:#fff;font-size:25px;line-height:1;cursor:pointer;backdrop-filter:blur(10px)}
+    .campus-lightbox-caption{width:min(100%,780px);padding:16px 3px 0;color:#fff}
+    .campus-lightbox-caption strong{display:block;font-size:17px;line-height:1.4}
+    .campus-lightbox-caption small{display:block;margin-top:5px;font-size:11px;color:rgba(255,255,255,.66)}
+    body.campus-lightbox-open{overflow:hidden}
+    @media(max-width:370px){.campus-photo-card{height:172px}.campus-photo-copy strong{font-size:15px}.campus-filter-head{align-items:flex-start;flex-direction:column;gap:5px}}
+    @media(min-width:700px){.campus-photo-card{height:230px}.campus-photo-copy{left:18px;bottom:17px}.campus-photo-copy strong{font-size:19px}}
+    @media(prefers-reduced-motion:reduce){.campus-photo-card img{transition:none}}
+
+  
+    /* v2.7.3 — 高频问答进入可滚动内容区，避免挤压回答区域 */
+    .ai-quick-wrap{
+      margin:2px 0 15px;background:rgba(255,253,251,.92);border:1px solid #eadfd9;
+      border-radius:18px;overflow:hidden;box-shadow:0 6px 16px rgba(69,37,35,.05);
+    }
+    .ai-quick-head{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:11px 12px 0}
+    .ai-quick-head strong{font-size:11px;color:#655953;white-space:nowrap}
+    .ai-quick-head strong span{margin-left:4px;color:#a2948e;font-weight:600}
+    .ai-quick-head button{border:0;background:transparent;color:var(--red);font-size:11px;font-weight:800;padding:4px 0;cursor:pointer;white-space:nowrap}
+    .ai-quick-wrap .ai-quick{border-top:0;background:transparent}
+    .faq-catalog[hidden]{display:none!important}
+    .faq-catalog{position:fixed;inset:0;z-index:10020;background:rgba(25,14,14,.55);display:flex;align-items:flex-end;justify-content:center;padding:18px 0 0;backdrop-filter:blur(5px)}
+    .faq-catalog-panel{width:min(100%,760px);height:min(88dvh,820px);background:#faf7f4;border-radius:26px 26px 0 0;display:flex;flex-direction:column;overflow:hidden;box-shadow:0 -20px 60px rgba(31,16,16,.25)}
+    .faq-catalog-head{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:16px 18px 12px;background:#fff;border-bottom:1px solid #eadfd9}
+    .faq-catalog-head strong{display:block;font-size:17px}
+    .faq-catalog-head small{display:block;margin-top:3px;color:#988a84;font-size:10px}
+    .faq-catalog-close{width:38px;height:38px;border:0;border-radius:50%;background:#f3e9e5;color:#7c202a;font-size:22px;cursor:pointer}
+    .faq-search{padding:11px 14px;background:#fff;border-bottom:1px solid #eadfd9}
+    .faq-search input{width:100%;border:1px solid #e4d8d2;border-radius:14px;padding:11px 13px;outline:0;background:#fff;font-size:13px}
+    .faq-list{flex:1;min-height:0;overflow-y:auto;padding:12px 14px 24px;display:grid;gap:8px}
+    .faq-list button{border:1px solid #e7ddd7;background:#fff;border-radius:15px;padding:12px 13px;text-align:left;color:#3f3531;display:grid;grid-template-columns:28px 1fr 18px;align-items:center;gap:9px;cursor:pointer}
+    .faq-list button:hover{border-color:#cda9a7;background:#fffafa}
+    .faq-index{width:26px;height:26px;border-radius:9px;background:#f4e4e2;color:var(--red);display:grid;place-items:center;font-size:9px;font-weight:900}
+    .faq-title{font-size:12px;line-height:1.45;font-weight:700}
+    .faq-arrow{font-size:19px;color:#b6aaa5}
+    .faq-empty{padding:28px;text-align:center;color:#998b85;font-size:12px}
+    body.faq-open{overflow:hidden}
+
+    /* v2.6.2 — 点击后只显示纯物品列表 */
+
+    .packing-list-entry{
+      width:100%;margin:2px 0 18px;padding:17px 18px;border:1px solid #ead8d2;border-radius:22px;
+      background:linear-gradient(135deg,#fff 0%,#fff8f6 100%);display:flex;align-items:center;gap:13px;
+      text-align:left;color:var(--ink);box-shadow:0 8px 24px rgba(108,72,61,.055);cursor:pointer
+    }
+    .packing-entry-icon{flex:0 0 auto;width:44px;height:44px;border-radius:15px;display:grid;place-items:center;background:#971823;color:#fff;font-size:21px;box-shadow:0 8px 18px rgba(151,24,35,.18)}
+    .packing-entry-copy{min-width:0;flex:1}
+    .packing-entry-copy small{display:block;margin-bottom:3px;color:var(--red);font-size:10px;font-weight:800;letter-spacing:.08em}
+    .packing-entry-copy strong{display:block;font-size:17px;line-height:1.32;letter-spacing:-.01em}
+    .packing-entry-copy em{display:block;margin-top:4px;color:#978984;font-size:10px;font-style:normal;line-height:1.45}
+    .packing-list-arrow{flex:0 0 auto;color:#b9aaa4;font-size:25px;line-height:1;transition:transform .2s ease}
+    .packing-list-entry:hover .packing-list-arrow{transform:translateX(2px)}
+    .packing-list-entry.experience-entry{margin-top:-7px}
+    .experience-note{margin:0 0 12px;padding:13px 15px;border:1px solid #eadfda;border-radius:17px;background:#fffaf7;color:#6e5f59;font-size:12px;line-height:1.7}
+    .experience-note strong{color:var(--red)}
+    .packing-list-entry:focus-visible,.packing-list-header button:focus-visible{outline:3px solid rgba(151,24,35,.22);outline-offset:3px}
+    .packing-list-modal[hidden]{display:none!important}
+    .packing-list-modal{position:fixed;inset:0;z-index:10020;background:rgba(26,17,16,.52);display:flex;align-items:flex-end;justify-content:center;padding:0;backdrop-filter:blur(6px)}
+    .packing-list-sheet{position:relative;width:min(100%,700px);height:min(92vh,940px);background:#f8f5f2;border-radius:28px 28px 0 0;display:flex;flex-direction:column;overflow:hidden;box-shadow:0 -22px 70px rgba(28,14,12,.24)}
+    .packing-list-sheet:before{content:"";position:absolute;top:9px;left:50%;transform:translateX(-50%);width:42px;height:4px;border-radius:999px;background:#d9cfcb;z-index:3}
+    .packing-list-header{flex:0 0 auto;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:27px 20px 14px;border-bottom:1px solid #ece3df;background:rgba(255,255,255,.96);backdrop-filter:blur(12px)}
+    .packing-list-header h2{margin:0;font-size:19px;line-height:1.3;color:var(--ink);letter-spacing:-.02em}
+    .packing-list-header button{flex:0 0 auto;width:36px;height:36px;border:0;border-radius:50%;background:#f2edeb;color:#746863;font-size:22px;line-height:1;cursor:pointer}
+    .packing-list-body{overflow:auto;padding:16px 14px calc(34px + env(safe-area-inset-bottom));-webkit-overflow-scrolling:touch;scrollbar-width:thin;scrollbar-color:#d6cac5 transparent}
+    .packing-list-group{margin:0 0 12px;padding:0;border:1px solid #eee4df;border-radius:20px;background:#fff;overflow:hidden;box-shadow:0 5px 16px rgba(71,47,39,.035)}
+    .packing-list-group:last-child{margin-bottom:0}
+    .packing-group-head{display:flex;align-items:center;gap:10px;padding:14px 15px 12px;border-bottom:1px solid #f2ebe8;background:linear-gradient(90deg,#fff8f6 0%,#fff 72%)}
+    .packing-group-no{flex:0 0 auto;width:29px;height:29px;border-radius:10px;display:grid;place-items:center;background:#971823;color:#fff;font-size:11px;font-weight:800;box-shadow:0 5px 12px rgba(151,24,35,.14)}
+    .packing-list-group h3{margin:0;min-width:0;color:#2f2927;font-size:14px;line-height:1.4;letter-spacing:-.01em}
+    .packing-list-group h3 small{margin-left:6px;color:#a28f88;font-size:10px;font-weight:600}
+    .packing-list-group ul{margin:0;padding:3px 15px 6px;list-style:none}
+    .packing-list-group li{position:relative;margin:0;padding:10px 0 10px 17px;border-bottom:1px dashed #eee8e5;color:#4b4441;font-size:13px;line-height:1.58}
+    .packing-list-group li:last-child{border-bottom:0}
+    .packing-list-group li:before{content:"";position:absolute;left:1px;top:18px;width:6px;height:6px;border-radius:50%;background:#c8a59b}
+    .packing-item-name{color:#322c29;font-weight:750}
+    .packing-item-note{display:block;margin-top:2px;color:#958984;font-size:11px;line-height:1.55}
+    .packing-list-group.recommend{border-color:#e7dfc9}
+    .packing-list-group.recommend .packing-group-head{background:linear-gradient(90deg,#fffaf0 0%,#fff 72%)}
+    .packing-list-group.recommend .packing-group-no{background:#b38a3e;box-shadow:0 5px 12px rgba(179,138,62,.16)}
+    .packing-list-group.recommend li:before{background:#d2b36e}
+    body.packing-list-open{overflow:hidden}
+    @media(min-width:700px){
+      .packing-list-modal{align-items:center;padding:24px}
+      .packing-list-sheet{border-radius:28px;height:min(88vh,900px)}
+      .packing-list-body{padding:18px 18px 32px}
+      .packing-list-group ul{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));column-gap:22px}
+      .packing-list-group li:nth-last-child(2):nth-child(odd){border-bottom:0}
+    }
+
+  
+    /* v2.6.3 — 各书院专业目录 */
+    #serviceModal.major-directory .sheet{max-height:min(88vh,860px)}
+    #serviceModal.major-directory .detail-list{display:grid;gap:12px}
+    #serviceModal.major-directory .detail{padding:16px;border:1px solid #eadfd8;border-radius:18px;background:#fffdfb;box-shadow:0 5px 14px rgba(91,60,48,.035)}
+    #serviceModal.major-directory .detail>strong{display:block;font-size:15px;line-height:1.45;color:#2b2220;margin-bottom:10px}
+    #serviceModal.major-directory .detail ul{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px 12px;margin:0;padding:0;list-style:none}
+    #serviceModal.major-directory .detail li{position:relative;padding-left:13px;font-size:13px;line-height:1.55;color:#665b56}
+    #serviceModal.major-directory .detail li:before{content:"";position:absolute;left:0;top:.67em;width:5px;height:5px;border-radius:50%;background:#b92836}
+    @media(max-width:370px){#serviceModal.major-directory .detail ul{grid-template-columns:1fr}}
+
+
+    .ui-icon{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;display:block}
+    .sicon .ui-icon,.nav-ico .ui-icon,.icon-circle .ui-icon{margin:auto}
+    .packing-share-actions{position:sticky;bottom:-1px;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin:20px -2px 0;padding:13px 2px calc(8px + env(safe-area-inset-bottom));background:linear-gradient(180deg,rgba(255,252,248,.1),#fffaf5 24%);border-top:1px solid #eaded5;z-index:2}
+    .packing-share-actions button{border:1px solid #ead8d2;background:#fff;color:#8f1723;border-radius:14px;min-height:48px;padding:8px 6px;display:flex;align-items:center;justify-content:center;gap:5px;font-size:11px;font-weight:800;cursor:pointer}
+    .packing-share-actions button .ui-icon{width:17px;height:17px}
+    .packing-share-actions button:active{transform:scale(.98)}
+    .packing-share-status{min-height:18px;text-align:center;color:#85736c;font-size:11px;padding:2px 0 4px}
+
+
+    /* v2.7.2 — 多设备响应式与手机端稳定性增强 */
+    :root{
+      --app-max:1180px;
+      --content-max:1040px;
+      --shell-gap:0px;
+      --viewport-h:100vh;
+    }
+    @supports(height:100dvh){:root{--viewport-h:100dvh}}
+    html{
+      -webkit-text-size-adjust:100%;
+      text-size-adjust:100%;
+      scroll-behavior:smooth;
+      overflow-x:hidden;
+    }
+    body{
+      min-height:var(--viewport-h);
+      overflow-x:hidden;
+      overscroll-behavior-y:auto;
+    }
+    img,video,canvas{max-width:100%;height:auto}
+    /*
+      微信内置浏览器兼容：
+      部分 WebView 会把大面积 button/a 上的 manipulation 误判为纯点击手势，
+      导致从卡片区域起手时单指无法带动页面。让页面与交互控件使用浏览器原生
+      触摸判断；仅在真正的纵向滚动容器上明确允许 pan-y。
+    */
+    html,body,.app-shell,.page{touch-action:auto}
+    button,a,input{touch-action:auto;-webkit-tap-highlight-color:transparent}
+    button,a{user-select:none;-webkit-user-select:none}
+    input,textarea{user-select:text;-webkit-user-select:text}
+    :focus-visible{outline:3px solid rgba(165,31,45,.28);outline-offset:3px}
+    .app-shell{
+      width:100%;
+      max-width:var(--app-max);
+      min-height:calc(var(--viewport-h) - var(--shell-gap));
+    }
+    .page{min-height:calc(var(--viewport-h) - var(--shell-gap))}
+    .hero{padding-top:calc(18px + env(safe-area-inset-top))}
+    .hero-top{max-width:var(--content-max);margin-inline:auto}
+    .hero-copy{
+      left:50%;right:auto;
+      width:min(calc(100% - 48px),var(--content-max));
+      transform:translateX(-50%);
+    }
+    .hero-actions{
+      left:50%;right:auto;
+      width:min(calc(100% - 40px),var(--content-max));
+      transform:translateX(-50%);
+    }
+    .home-content,.guide-canvas,.page-pad{width:100%;margin-inline:auto}
+    .page-header{padding-top:calc(18px + env(safe-area-inset-top))}
+    .ai-top{padding-top:calc(16px + env(safe-area-inset-top))}
+    .bottom-nav{
+      width:100%;max-width:var(--app-max);
+      transition:transform .22s ease,opacity .22s ease;
+    }
+    .nav-btn,.icon-circle,.close,.guide-search button,.ask-bar button,.ai-input button{min-width:44px;min-height:44px}
+    .service-item,.chip,.guide-filter,.hero-action,.journey-card,.topic-card,.service-card{min-height:44px}
+    .quick-chips,.guide-filters,.ai-quick,.campus-filter-bar{
+      -webkit-overflow-scrolling:touch;
+      scroll-snap-type:x proximity;
+      overscroll-behavior-x:contain;
+    }
+    .quick-chips>* ,.guide-filters>* ,.ai-quick>* ,.campus-filter-bar>*{scroll-snap-align:start}
+    .chat-scroll,.packing-list-body,.sheet,.faq-list{
+      touch-action:pan-y;
+      -webkit-overflow-scrolling:touch;
+    }
+    #aiPage{height:calc(var(--viewport-h) - var(--shell-gap))}
+    .ai-layout{height:calc(var(--viewport-h) - var(--shell-gap) - var(--nav-h) - env(safe-area-inset-bottom))}
+    .ai-input{padding-bottom:calc(10px + env(safe-area-inset-bottom))}
+    .ai-input input,.ask-bar input,.guide-search input{font-size:16px}
+    body.keyboard-open .bottom-nav{transform:translate(-50%,115%);opacity:0;pointer-events:none}
+    body.keyboard-open #aiPage{padding-bottom:0}
+    body.keyboard-open .ai-layout{height:var(--viewport-h)}
+    body.keyboard-open .ai-input{padding-bottom:calc(10px + env(safe-area-inset-bottom))}
+    .modal,.packing-list-modal,.faq-catalog{padding-left:env(safe-area-inset-left);padding-right:env(safe-area-inset-right)}
+    .sheet,.packing-list-sheet,.faq-catalog-panel{max-width:calc(100vw - env(safe-area-inset-left) - env(safe-area-inset-right))}
+    @media(max-width:699px){
+      html,body{background:var(--cream)}
+      .app-shell{box-shadow:none}
+      .home-content{padding-left:max(13px,env(safe-area-inset-left));padding-right:max(13px,env(safe-area-inset-right))}
+      .guide-canvas,.page-pad{padding-left:max(14px,env(safe-area-inset-left));padding-right:max(14px,env(safe-area-inset-right))}
+      .bottom-nav{padding-left:max(8px,env(safe-area-inset-left));padding-right:max(8px,env(safe-area-inset-right))}
+      .hero-copy{width:min(calc(100% - 32px),var(--content-max))}
+      .hero-actions{width:min(calc(100% - 28px),var(--content-max))}
+      .bubble{max-width:91%}
+    }
+
+    @media(max-width:420px){
+      .ai-top{padding-left:max(11px,env(safe-area-inset-left));padding-right:max(11px,env(safe-area-inset-right))}
+      .chat-scroll{padding-left:max(12px,env(safe-area-inset-left));padding-right:max(12px,env(safe-area-inset-right))}
+      .answer-card{width:100%}
+      .bubble{max-width:92%}
+      .answer-summary{font-size:13px}
+      .bottom-nav{color:#7f7576}
+      .nav-btn{color:#817778}
+    }
+    @media(max-width:359px){
+      .ai-top{gap:8px;padding-top:calc(10px + env(safe-area-inset-top));padding-bottom:10px}
+      .ai-top .ai-avatar{width:40px;height:40px;border-radius:13px;font-size:13px}
+      .ai-top strong{font-size:14px}
+      .ai-top small{font-size:9px}
+      .ai-top .status{padding:5px 6px;font-size:9px}
+      .answer-head h3{font-size:15px}
+      .status-tag{font-size:9px}
+      .fact{grid-template-columns:72px 1fr}
+      .ai-quick-head strong span{display:none}
+      .ai-input{padding-left:10px;padding-right:10px}
+    }
+    @media(max-width:359px){
+      .hero{min-height:690px;padding-inline:14px}
+      .hero-copy{bottom:222px}
+      .hero-actions{grid-template-columns:1fr;gap:9px;bottom:16px}
+      .hero-action{padding:12px 13px;border-radius:18px}
+      .hero h1{font-size:29px}
+      .hero p{font-size:13px}
+      .service-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+      .service-item{display:grid;grid-template-columns:42px 1fr;align-items:center;text-align:left;gap:9px;padding:10px}
+      .service-item .sicon{margin:0;width:42px;height:42px}
+      .service-item span{font-size:12px;white-space:normal}
+      .topic-grid{grid-template-columns:1fr}
+      .guide-overview{padding:16px}
+      .guide-overview h2{font-size:20px}
+      .packing-share-actions{grid-template-columns:1fr}
+      .packing-share-actions button{min-height:44px}
+    }
+    @media(min-width:700px){
+      :root{--shell-gap:36px}
+      .app-shell{width:calc(100% - 32px);max-width:900px}
+      .bottom-nav{width:calc(100% - 32px);max-width:900px}
+      .home-content,.guide-canvas,.page-pad{max-width:760px}
+      .hero{min-height:610px}
+      .hero h1{font-size:43px}
+      .hero p{font-size:15px}
+      .hero-copy{bottom:142px}
+      .hero-actions{bottom:24px}
+      .service-list{grid-template-columns:repeat(3,minmax(0,1fr))}
+      .topic-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+      .sheet{width:min(calc(100% - 48px),760px)}
+      .faq-catalog-panel{width:min(calc(100% - 48px),760px)}
+      .answer-card{width:min(82%,620px)}
+    }
+    @media(min-width:1024px){
+      :root{--shell-gap:48px}
+      .app-shell{width:calc(100% - 48px);max-width:1180px;margin:24px auto;border-radius:30px}
+      .bottom-nav{width:calc(100% - 48px);max-width:1180px;bottom:24px;border-radius:0 0 30px 30px}
+      .home-content,.guide-canvas,.page-pad{max-width:1040px}
+      .hero{min-height:650px;padding-inline:34px;background-position:center 43%}
+      .hero h1{font-size:50px}
+      .hero p{font-size:16px;max-width:620px}
+      .hero-copy{bottom:150px}
+      .hero-actions{bottom:28px;grid-template-columns:repeat(2,minmax(0,1fr));max-width:880px}
+      .hero-action{padding:20px 22px}
+      .service-grid{grid-template-columns:repeat(8,minmax(0,1fr));gap:12px}
+      .service-grid-three{grid-template-columns:repeat(3,minmax(0,1fr));max-width:760px}
+      .service-item{padding:15px 7px 13px}
+      .journey-list{grid-template-columns:repeat(2,minmax(0,1fr))}
+      .topic-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
+      .campus-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
+      .service-list{grid-template-columns:repeat(4,minmax(0,1fr))}
+      .service-list-three{grid-template-columns:repeat(3,minmax(0,1fr))}
+      .detail-gallery{grid-template-columns:repeat(2,minmax(0,1fr))}
+      .map-preview{height:340px}
+      .sheet{width:min(calc(100% - 64px),820px)}
+      .packing-list-sheet{width:min(calc(100% - 64px),860px)}
+      .faq-catalog-panel{width:min(calc(100% - 64px),820px)}
+      .answer-card{width:min(72%,720px)}
+      .chat-scroll{padding-inline:max(24px,calc((100% - 900px)/2))}
+      .ai-quick,.ai-input{padding-left:max(18px,calc((100% - 900px)/2));padding-right:max(18px,calc((100% - 900px)/2))}
+    }
+    @media(orientation:landscape) and (max-height:560px) and (max-width:1023px){
+      .hero{min-height:520px}
+      .hero-copy{bottom:130px}
+      .hero-actions{bottom:14px}
+      .page-header{position:relative}
+      .packing-list-sheet{height:96vh}
+    }
+    @media(hover:hover) and (pointer:fine){
+      .hero-action,.service-item,.service-card,.journey-card,.topic-card,.chip,.guide-filter,.nav-btn{transition:transform .18s ease,box-shadow .18s ease,background .18s ease}
+      .hero-action:hover,.service-item:hover,.service-card:hover,.journey-card:hover,.topic-card:hover{transform:translateY(-2px)}
+      .chip:hover,.guide-filter:hover{background:#fff1ed}
+    }
+    @media(prefers-reduced-motion:reduce){
+      html{scroll-behavior:auto}
+      *,*:before,*:after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;scroll-behavior:auto!important}
+    }
+    @media(prefers-contrast:more){
+      :root{--line:#cdbfba;--muted:#5e5354}
+      .service-item,.topic-card,.journey-card,.guide-block,.ai-entry{border-width:2px}
+    }
+
+
+    /* v2.7.6 — 四项校园服务：手机2列，平板/桌面4列 */
+    .service-grid-four{grid-template-columns:repeat(2,minmax(0,1fr));max-width:none}
+    .service-grid-four .service-item>span:last-child{white-space:normal;line-height:1.35}
+    .service-list-four{grid-template-columns:repeat(2,minmax(0,1fr))}
+    .service-list-four .service-card strong{line-height:1.45}
+    @media(min-width:700px){
+      .service-grid-four{grid-template-columns:repeat(4,minmax(0,1fr));max-width:1040px}
+      .service-list-four{grid-template-columns:repeat(2,minmax(0,1fr))}
+    }
+    @media(min-width:1024px){
+      .service-grid-four{grid-template-columns:repeat(4,minmax(0,1fr));max-width:1040px}
+      .service-list-four{grid-template-columns:repeat(4,minmax(0,1fr))}
+    }
+
+    /*
+      微信内置浏览器使用独立主滚动容器：
+      避免 WebView 把 body 的单指手势交给外层页面，出现只能双指滚动。
+    */
+    html,body{height:100%;overflow:hidden}
+    .app-shell{
+      height:calc(var(--viewport-h) - var(--shell-gap));
+      min-height:0;
+      overflow-x:hidden;
+      overflow-y:auto;
+      overscroll-behavior-y:auto;
+      touch-action:pan-x pan-y;
+      -webkit-overflow-scrolling:touch;
+    }
+  </style>
+  <!-- v2.6.7: added senior opening experience card and modal -->
+</head>
+<body>
+<div class="app-shell">
+  <section class="page active" id="homePage">
+    <div class="hero">
+      <div class="hero-top">
+        <div class="logo-lockup">
+          <div class="logo-mark">7</div>
+          <div class="logo-copy">
+            <strong>小7校园AI</strong>
+            <small>广东岭南职业技术学院 · 清远校区</small>
+          </div>
+        </div>
+        <button class="icon-circle" type="button" data-guide-service="notices" aria-label="校园通知"><svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9M10 21h4"/></svg></button>
+      </div>
+      <div class="hero-copy">
+        <div class="tag-row">
+          <span class="hero-tag">2026 新生服务</span>
+          <span class="hero-tag light">清远校区</span>
+        </div>
+        <h1>欢迎来到岭南</h1>
+        <p>一站式新生入学、校园生活与小7校园智能知识库。</p>
+        <span class="hero-pill">✦ 真实校园资料持续完善</span>
+      </div>
+      <div class="hero-actions">
+        <a class="hero-action" href="https://www.720yun.com/vr/b37jedmvtO7" target="_blank" rel="noopener noreferrer" aria-label="打开清远校区VR校园2025版">
+          <span class="i">VR</span>
+          <span><strong>VR校园</strong><small>720°沉浸式逛校园 · 2025版</small></span>
+          <span class="arrow">›</span>
+        </a>
+        <button class="hero-action" data-tab="guide">
+          <span class="i"><svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4h6a3 3 0 0 1 3 3v13a3 3 0 0 0-3-3H4z"/><path d="M20 4h-6a3 3 0 0 0-3 3v13a3 3 0 0 1 3-3h6z"/></svg></span>
+          <span><strong>新生指南</strong><small>报到生活全知道</small></span>
+          <span class="arrow">›</span>
+        </button>
+      </div>
+    </div>
+
+    <div class="home-content">
+      <section class="ai-entry">
+        <div class="card-head">
+          <div class="ai-avatar">小7</div>
+          <div><strong>直接问小7</strong><small>校园知识库智能检索</small></div>
+          <span class="online">● 知识库可用</span>
+        </div>
+        <form class="ask-bar" id="homeAskForm">
+          <input id="homeAskInput" placeholder="宿舍几人间？食堂几点关门？" autocomplete="off">
+          <button aria-label="发送问题">→</button>
+        </form>
+        <div class="quick-chips" aria-label="首页高频问答入口">
+          <button class="chip" data-ask="新生什么时候报到？">报到时间</button>
+          <button class="chip" data-ask="怎么交学费？">学费缴纳</button>
+          <button class="chip" data-ask="宿舍是几人间？">宿舍人数</button>
+          <button class="chip" data-ask="宿舍晚上会断网断电吗？">宿舍水电</button>
+          <button class="chip" data-ask="学校快递怎么取件？">快递取件</button>
+          <button class="chip" data-ask="学校有哪些运动设施？">运动设施</button>
+          <button class="chip" data-ask="选修课怎么选？">选课流程</button>
+          <button class="chip" data-ask="一个月生活费大约多少？">生活费</button>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="section-title"><h2>校园服务</h2><span>点击查看详情</span></div>
+        <div class="service-grid service-grid-four" id="homeCampusServices" aria-live="polite"></div>
+      </section>
+
+      <section class="section">
+        <div class="section-title"><h2>新生提醒</h2><span>学姐个人经验+官网搜索｜仅供参考</span></div>
+        <div class="notice-card">
+          <div class="date">09<br>05</div>
+          <div>
+            <strong>2026级清远校区新生报到</strong>
+            <p>报到地点：广东岭南职业技术学院（清远校区）。出发前仍请查看个人收到的学院或书院通知。</p>
+          </div>
+        </div>
+      </section>
+    </div>
+  </section>
+
+  <section class="page guide-page" id="guidePage">
+    <header class="page-header">
+      <div><h1>新生指南</h1><small>清远校区 · 2026级新生资料</small></div>
+      <span class="header-badge">持续完善</span>
+    </header>
+
+    <div class="guide-canvas">
+      <form class="guide-search" id="guideSearchForm">
+        <span class="search-icon">⌕</span>
+        <input id="guideSearchInput" type="search" placeholder="搜索报到、宿舍、食堂、快递…" autocomplete="off">
+        <button type="submit" aria-label="搜索">→</button>
+      </form>
+
+      <div class="guide-filters" aria-label="新生指南分类筛选">
+        <button class="guide-filter active" type="button" data-guide-group="all">全部</button>
+        <button class="guide-filter" type="button" data-guide-group="arrival">报到</button>
+        <button class="guide-filter" type="button" data-guide-group="dormitory">宿舍</button>
+        <button class="guide-filter" type="button" data-guide-group="food">吃喝</button>
+        <button class="guide-filter" type="button" data-guide-group="courier">快递</button>
+        <button class="guide-filter" type="button" data-guide-group="study">学业</button>
+        <button class="guide-filter" type="button" data-guide-group="campus">校园地图</button>
+      </div>
+      <button class="packing-list-entry" type="button" id="packingListOpen" aria-haspopup="dialog" aria-controls="packingListModal">
+        <span class="packing-entry-icon" aria-hidden="true">📜</span>
+        <span class="packing-entry-copy">
+          <small>大一开学须知</small>
+          <strong>准大一开学全清单</strong>
+          <em>证件、军训、床品、数码与宿舍用品</em>
+        </span>
+        <span class="packing-list-arrow" aria-hidden="true">›</span>
+      </button>
+
+      <button class="packing-list-entry experience-entry" type="button" id="openingExperienceOpen" aria-haspopup="dialog" aria-controls="openingExperienceModal">
+        <span class="packing-entry-icon" aria-hidden="true">💬</span>
+        <span class="packing-entry-copy">
+          <small>学姐开学经验之谈</small>
+          <strong>报到、宿舍与行李怎么安排</strong>
+          <em>体育馆报到、书院方位、接驳车与宿舍清洁建议</em>
+        </span>
+        <span class="packing-list-arrow" aria-hidden="true">›</span>
+      </button>
+
+      <div class="packing-list-modal" id="packingListModal" hidden role="dialog" aria-modal="true" aria-labelledby="packingListTitle">
+        <div class="packing-list-sheet">
+          <header class="packing-list-header">
+            <h2 id="packingListTitle">开学物品清单</h2>
+            <button type="button" id="packingListClose" aria-label="关闭物品列表">×</button>
+          </header>
+          <div class="packing-list-body">
+            <section class="packing-list-group">
+              <div class="packing-group-head"><span class="packing-group-no">01</span><h3>证件与档案</h3></div>
+              <ul>
+                <li><span class="packing-item-name">身份证</span></li>
+                <li><span class="packing-item-name">户口本复印件</span><span class="packing-item-note">按学校安排准备；学姐这届未要求。</span></li>
+                <li><span class="packing-item-name">录取通知书、高考准考证</span></li>
+                <li><span class="packing-item-name">团员证、团员档案</span></li>
+                <li><span class="packing-item-name">证件照</span><span class="packing-item-note">1寸、2寸，红白蓝底，并保留电子版。</span></li>
+                <li><span class="packing-item-name">现金</span><span class="packing-item-note">无需特意携带，校内基本使用移动支付。</span></li>
+              </ul>
+            </section>
+
+            <section class="packing-list-group">
+              <div class="packing-group-head"><span class="packing-group-no">02</span><h3>军训用品 <small>26届冬训</small></h3></div>
+              <ul>
+                <li><span class="packing-item-name">高倍数防汗防晒霜、防晒喷雾</span></li>
+                <li><span class="packing-item-name">芦荟胶、晒后修复补水面膜</span></li>
+                <li><span class="packing-item-name">软鞋垫、大容量水杯、小风扇</span></li>
+                <li><span class="packing-item-name">藿香正气水、花露水、驱蚊水、风油精</span></li>
+                <li><span class="packing-item-name">湿巾、纸巾、小毛巾</span></li>
+              </ul>
+            </section>
+
+            <section class="packing-list-group">
+              <div class="packing-group-head"><span class="packing-group-no">03</span><h3>衣物鞋帽</h3></div>
+              <ul>
+                <li><span class="packing-item-name">夏装</span><span class="packing-item-note">T恤、短裤、裙子等日常穿搭，建议3—5套。</span></li>
+                <li><span class="packing-item-name">秋冬装</span><span class="packing-item-note">长袖卫衣、薄外套1—2件，以防突然降温。</span></li>
+                <li><span class="packing-item-name">贴身衣物</span><span class="packing-item-note">内衣裤、袜子建议多备。</span></li>
+                <li><span class="packing-item-name">睡衣</span><span class="packing-item-note">长袖或短袖睡衣裤，建议两套。</span></li>
+                <li><span class="packing-item-name">防晒衣、防晒帽</span></li>
+                <li><span class="packing-item-name">凉拖鞋、运动鞋、休闲鞋</span></li>
+                <li><span class="packing-item-name">腰带</span><span class="packing-item-note">军训裤腰普遍偏大，自带腰带更稳妥。</span></li>
+              </ul>
+            </section>
+
+            <section class="packing-list-group">
+              <div class="packing-group-head"><span class="packing-group-no">04</span><h3>床上用品</h3></div>
+              <ul>
+                <li><span class="packing-item-name">床垫、床单、被套、枕套、枕芯</span></li>
+                <li><span class="packing-item-name">夏凉被或空调被、凉席</span></li>
+                <li><span class="packing-item-name">蚊帐、床帘、眼罩、耳塞</span></li>
+              </ul>
+            </section>
+
+            <section class="packing-list-group">
+              <div class="packing-group-head"><span class="packing-group-no">05</span><h3>洗护、护肤与美妆</h3></div>
+              <ul>
+                <li><span class="packing-item-name">洗漱用品</span><span class="packing-item-note">牙膏、牙刷、漱口杯、洗面奶、洗脸巾、洗手液。</span></li>
+                <li><span class="packing-item-name">洗浴用品</span><span class="packing-item-note">洗发水、护发素、沐浴露、浴巾、干发帽、毛巾、洗澡球。</span></li>
+                <li><span class="packing-item-name">身体护理</span><span class="packing-item-note">身体乳、护手霜、润唇膏、护发精油、脚膜、肥皂。</span></li>
+                <li><span class="packing-item-name">护肤用品</span><span class="packing-item-note">水乳、面霜、眼霜、精华、面膜。</span></li>
+                <li><span class="packing-item-name">化妆用品</span><span class="packing-item-note">按个人习惯准备粉底、遮瑕、散粉、眉笔、眼影、口红等。</span></li>
+                <li><span class="packing-item-name">卸妆用品</span><span class="packing-item-note">卸妆水或卸妆油、卸妆棉、化妆镜。</span></li>
+              </ul>
+            </section>
+
+            <section class="packing-list-group">
+              <div class="packing-group-head"><span class="packing-group-no">06</span><h3>电子数码与学习用品</h3></div>
+              <ul>
+                <li><span class="packing-item-name">手机、充电器、数据线</span></li>
+                <li><span class="packing-item-name">大容量充电宝</span></li>
+                <li><span class="packing-item-name">插线板或排插</span><span class="packing-item-note">建议带USB口；宿舍电器功率不要超过800W。</span></li>
+                <li><span class="packing-item-name">耳机、笔记本电脑、平板</span></li>
+                <li><span class="packing-item-name">U盘</span><span class="packing-item-note">用于交作业和打印资料。</span></li>
+                <li><span class="packing-item-name">台灯、笔、笔记本</span><span class="packing-item-note">台灯建议选择充电式，其他按专业需求准备。</span></li>
+              </ul>
+            </section>
+
+            <section class="packing-list-group">
+              <div class="packing-group-head"><span class="packing-group-no">07</span><h3>宿舍生活与收纳</h3></div>
+              <ul>
+                <li><span class="packing-item-name">24—26寸行李箱、通勤双肩包</span></li>
+                <li><span class="packing-item-name">雨伞、梳子、发圈、指甲刀、小剪刀、小挂锁</span></li>
+                <li><span class="packing-item-name">洗衣液、衣架、晾衣杆、粘钩、收纳盒、抹布</span></li>
+                <li><span class="packing-item-name">抽纸、卷纸、湿巾、垃圾桶、垃圾袋</span></li>
+                <li><span class="packing-item-name">饭盒、餐具、洗洁精</span><span class="packing-item-note">按个人用餐习惯准备。</span></li>
+                <li><span class="packing-item-name">除湿剂、干燥剂、杀虫剂</span><span class="packing-item-note">南方潮湿地区建议准备。</span></li>
+              </ul>
+            </section>
+
+            <section class="packing-list-group">
+              <div class="packing-group-head"><span class="packing-group-no">08</span><h3>常备医药箱</h3></div>
+              <ul>
+                <li><span class="packing-item-name">感冒药、退烧药、消炎药</span></li>
+                <li><span class="packing-item-name">止痛药、止泻药、胃药、过敏药</span></li>
+                <li><span class="packing-item-name">创可贴、碘伏、酒精棉片、体温计、口罩</span></li>
+                <li><span class="packing-item-name">医用棉签、纱布</span></li>
+              </ul>
+            </section>
+
+            <section class="packing-list-group recommend">
+              <div class="packing-group-head"><span class="packing-group-no">09</span><h3>建议自己带去</h3></div>
+              <ul>
+                <li><span class="packing-item-name">内衣、内裤、袜子</span></li>
+                <li><span class="packing-item-name">被子、枕头、床单、床垫</span></li>
+                <li><span class="packing-item-name">毛巾、浴巾、水杯、指甲刀、小剪刀、小镜子</span></li>
+                <li><span class="packing-item-name">夏装和急需穿的秋装外套</span></li>
+                <li><span class="packing-item-name">笔记本电脑和贵重证件</span></li>
+              </ul>
+            </section>
+
+            <section class="packing-list-group recommend">
+              <div class="packing-group-head"><span class="packing-group-no">10</span><h3>建议到校再买或网购</h3></div>
+              <ul>
+                <li><span class="packing-item-name">抽纸、卫生纸</span><span class="packing-item-note">先带几包应急，到校后再整箱购买。</span></li>
+                <li><span class="packing-item-name">垃圾桶</span></li>
+                <li><span class="packing-item-name">洗脸盆、水桶</span></li>
+                <li><span class="packing-item-name">洗衣液、收纳筐</span></li>
+                <li><span class="packing-item-name">衣架</span><span class="packing-item-note">先带5个应急，其余到校后购买。</span></li>
+                <li><span class="packing-item-name">台灯</span></li>
+                <li><span class="packing-item-name">大镜子</span><span class="packing-item-note">可先带小化妆镜，到校后再购买。</span></li>
+              </ul>
+            </section>
+
+            <div class="packing-share-actions" aria-label="清单分享工具">
+              <button type="button" id="copyPackingList"><svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4H4v12h4"/></svg><span>复制清单</span></button>
+              <button type="button" id="imagePackingList"><svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="3"/><circle cx="9" cy="10" r="2"/><path d="m4 18 5-5 4 4 3-3 4 4"/></svg><span>生成长图</span></button>
+              <button type="button" id="sharePackingList"><svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="m8.5 10.7 7-4.2M8.5 13.3l7 4.2"/></svg><span>分享给家长</span></button>
+            </div>
+            <div class="packing-share-status" id="packingShareStatus" aria-live="polite"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="packing-list-modal" id="openingExperienceModal" hidden role="dialog" aria-modal="true" aria-labelledby="openingExperienceTitle">
+        <div class="packing-list-sheet">
+          <header class="packing-list-header">
+            <h2 id="openingExperienceTitle">学姐开学经验之谈</h2>
+            <button type="button" id="openingExperienceClose" aria-label="关闭学姐开学经验">×</button>
+          </header>
+          <div class="packing-list-body">
+            <p class="experience-note"><strong>先记住最重要的一点：</strong>和家人一起到校的同学，如果学院群、书院群或现场志愿者已经确认了对应书院，可以先按指引把行李暂放在书院宿舍楼下，不用先搬上楼；学生本人再前往体育馆完成报到。报到后确认具体楼栋、楼层和房间，再返回宿舍办理入住。尚未确认书院或宿舍区域时，不要自行卸下行李，先询问现场志愿者或乘坐学校接驳车。开学当天安排可能调整，以现场指引为准。</p>
+
+            <section class="packing-list-group recommend">
+              <div class="packing-group-head"><span class="packing-group-no">01</span><h3>先放行李到楼下，再去体育馆报到</h3></div>
+              <ul>
+                <li><span class="packing-item-name">到校后的顺序</span><span class="packing-item-note">已确认对应书院时，先按现场指引把行李暂放在书院宿舍楼下，不用先搬上楼；学生本人再前往体育馆办理报到。尚未确认书院时，先咨询志愿者，不要自行卸下行李。</span></li>
+                <li><span class="packing-item-name">报到后确认宿舍</span><span class="packing-item-note">完成体育馆报到后，才能确认自己的具体宿舍楼栋、楼层和房间，再返回宿舍办理入住并搬运行李。</span></li>
+                <li><span class="packing-item-name">靠近南门的书院</span><span class="packing-item-note">笃学、知行、明德，距离广东岭南职业技术学院正门（南门）相对较近。</span></li>
+                <li><span class="packing-item-name">靠近北门的书院</span><span class="packing-item-note">思诚、崇礼、至善、励能，距离学校北门相对较近。</span></li>
+                <li><span class="packing-item-name">接驳车与大巴</span><span class="packing-item-note">开学当天通常会安排接驳车或大巴前往各宿舍区域，但人流量较大，可能需要排队，具体以学校当天安排为准。</span></li>
+              </ul>
+            </section>
+
+            <section class="packing-list-group">
+              <div class="packing-group-head"><span class="packing-group-no">02</span><h3>桶和面盆可以到校再买</h3></div>
+              <ul>
+                <li><span class="packing-item-name">减少搬运行李</span><span class="packing-item-note">桶、面盆体积大，不必一路拎到学校，到校后在校内或附近购买更省力。</span></li>
+                <li><span class="packing-item-name">按实际需求购买</span><span class="packing-item-note">学姐平时除了偶尔泡衣服，使用频率并不高，可以入住后再决定需要买多大、买几个。</span></li>
+              </ul>
+            </section>
+
+            <section class="packing-list-group">
+              <div class="packing-group-head"><span class="packing-group-no">03</span><h3>带好宿舍消毒用品</h3></div>
+              <ul>
+                <li><span class="packing-item-name">消毒喷雾</span><span class="packing-item-note">建议准备宿舍可用的消毒喷雾，例如滴露消毒喷雾；使用前注意查看适用材质和通风要求。</span></li>
+                <li><span class="packing-item-name">洗衣机清洁剂</span><span class="packing-item-note">公共洗衣机首次使用前，可以先按产品说明进行清洁。</span></li>
+              </ul>
+            </section>
+
+            <section class="packing-list-group">
+              <div class="packing-group-head"><span class="packing-group-no">04</span><h3>多带一条抹布</h3></div>
+              <ul>
+                <li><span class="packing-item-name">入住先清洁</span><span class="packing-item-note">到宿舍后先擦柜子、桌面、床架和床位周边，再整理衣物和铺床。</span></li>
+                <li><span class="packing-item-name">建议分开使用</span><span class="packing-item-note">最好准备两条不同颜色的抹布，将桌柜清洁和卫生区域清洁分开。</span></li>
+              </ul>
+            </section>
+          </div>
+        </div>
+      </div>
+
+      <section class="guide-section">
+        <div class="guide-title-row">
+          <div>
+            <div class="guide-eyebrow" style="color:#c3a05a">新生入学流程</div>
+            <h2>新生入学，从这里开始</h2>
+          </div>
+          <small>按顺序查看</small>
+        </div>
+
+        <div class="journey-list" id="journeyList">
+          <button class="journey-card" type="button" data-guide-service="registration" data-guide-group="arrival" data-guide-keywords="报到准备 录取通知书 准考证 身份证 9月5日 入学材料">
+            <span class="journey-num">01</span>
+            <span class="journey-copy"><span class="journey-icon">✓</span><span><strong>报到准备</strong><small>日期、证件与报到材料</small></span></span>
+            <span class="journey-arrow">›</span>
+          </button>
+          <button class="journey-card" type="button" data-guide-service="dorm" data-guide-group="dormitory" data-guide-keywords="校区宿舍 宿舍生活 四人间 五人间 床铺 床垫 入住">
+            <span class="journey-num">02</span>
+            <span class="journey-copy"><span class="journey-icon">⌂</span><span><strong>校区宿舍</strong><small>房型、床铺与入住提醒</small></span></span>
+            <span class="journey-arrow">›</span>
+          </button>
+          <button class="journey-card" type="button" data-guide-service="food" data-guide-group="food courier" data-guide-keywords="校园生活 食堂 快递 菜鸟驿站 取件 收货地址 餐饮 商业街 奶茶 咖啡">
+            <span class="journey-num">03</span>
+            <span class="journey-copy"><span class="journey-icon">♨</span><span><strong>校园生活</strong><small>食堂、快递与常用服务</small></span></span>
+            <span class="journey-arrow">›</span>
+          </button>
+        </div>
+      </section>
+
+      <section class="guide-section">
+        <div class="guide-title-row">
+          <div>
+            <div class="guide-eyebrow" style="color:#c3a05a">新生常用主题</div>
+            <h2>分类指南</h2>
+          </div>
+          <small id="guideResultCount">10项</small>
+        </div>
+
+        <div class="topic-grid" id="topicGrid">
+          <button class="topic-card" type="button" data-guide-service="registration" data-guide-group="arrival" data-guide-keywords="报到入学 日期 材料 通知 录取通知书">
+            <span class="topic-icon">✓</span><span class="topic-copy"><strong>报到入学</strong><small>时间、地点与材料</small></span><span class="topic-arrow">›</span>
+          </button>
+          <button class="topic-card" type="button" data-guide-service="major" data-guide-group="study" data-guide-keywords="书院专业 学院 专业 院系 思诚 知行 明德 崇礼 砺能 弘毅 笃学 至善">
+            <span class="topic-icon">▥</span><span class="topic-copy"><strong>各书院专业</strong><small>8个学院书院 · 47个专业</small></span><span class="topic-arrow">›</span>
+          </button>
+          <button class="topic-card" type="button" data-guide-service="dorm" data-guide-group="dormitory" data-guide-keywords="宿舍生活 房型 床铺 床垫 入住">
+            <span class="topic-icon">⌂</span><span class="topic-copy"><strong>宿舍生活</strong><small>房型、床铺与入住</small></span><span class="topic-arrow">›</span>
+          </button>
+          <button class="topic-card" type="button" data-guide-service="food" data-guide-group="food courier" data-guide-keywords="食堂餐饮 食堂 快递 菜鸟驿站 取件码 身份码 扫码出库 收货地址 营业 时间 吃饭">
+            <span class="topic-icon">♨</span><span class="topic-copy"><strong>食堂餐饮</strong><small>营业时间与用餐提醒</small></span><span class="topic-arrow">›</span>
+          </button>
+          <button class="topic-card" type="button" data-guide-service="bath" data-guide-group="dormitory" data-guide-keywords="浴室热水 洗澡 热水 充值 报修 24小时 普通宿舍 有电梯宿舍">
+            <span class="topic-icon">♢</span><span class="topic-copy"><strong>浴室热水</strong><small>按宿舍类型区分供应时间</small></span><span class="topic-arrow">›</span>
+          </button>
+          <button class="topic-card" type="button" data-guide-service="study" data-guide-group="study" data-guide-keywords="学习选课 学业 政策 课程 选课 请假">
+            <span class="topic-icon">▣</span><span class="topic-copy"><strong>学习办事</strong><small>请假与常用校园办事</small></span><span class="topic-arrow">›</span>
+          </button>
+          <button class="topic-card" type="button" data-guide-service="loan" data-guide-group="study" data-guide-keywords="奖助事务 国家助学贷款 奖学金 资助">
+            <span class="topic-icon">♙</span><span class="topic-copy"><strong>奖助事务</strong><small>贷款及资助官方入口</small></span><span class="topic-arrow">›</span>
+          </button>
+          <button class="topic-card is-pending" type="button" data-guide-service="safety" data-guide-group="arrival" data-guide-keywords="安全提醒 校园安全 宿舍安全 防诈骗">
+            <span class="topic-icon">◇</span><span class="topic-copy"><strong>安全提醒</strong><small>官方安全资料待补充</small></span><span class="topic-arrow">›</span>
+          </button>
+          <button class="topic-card is-pending" type="button" data-guide-service="campusLife" data-guide-group="campus" data-guide-keywords="校园生活 社团 活动 医务室 体育场">
+            <span class="topic-icon">♧</span><span class="topic-copy"><strong>校园生活</strong><small>社团活动资料待补充</small></span><span class="topic-arrow">›</span>
+          </button>
+          <button class="topic-card" type="button" data-guide-service="milkTea" data-guide-group="food" data-guide-keywords="奶茶店 奶茶 瑞幸 喜茶 古茗 益禾堂 茶瀑布 一点点 饮品 咖啡">
+            <span class="topic-icon">◉</span><span class="topic-copy"><strong>奶茶店</strong><small>6家门店位置与实景</small></span><span class="topic-arrow">›</span>
+          </button>
+        </div>
+        <div class="guide-empty" id="guideEmpty">该分类的资料和照片待补充。</div>
+      </section>
+      <section class="guide-section" id="campusGallerySection">
+        <div class="guide-title-row">
+          <div>
+            <div class="guide-eyebrow" style="color:#c3a05a">校园实景</div>
+            <h2>校园实景图集</h2>
+          </div>
+          <span class="campus-count-pill">共 46 张</span>
+        </div>
+
+        <div class="campus-gallery-stack campus-v239">
+          <div class="campus-preview-grid is-three" aria-label="校园实景分类预览">
+            <button class="campus-preview-card campus-preview-action" type="button" data-campus-preview-filter="street" aria-label="查看商业街美食5张校园实景">
+              <img src="https://cdn.jsdelivr.net/gh/qiyu03340-boop/xiao7-campus@e7052785d9af25bb2dc8cde4701bed7bbf56c369/assets/images/img-002-989dfa72d81a.webp" alt="商业街美食" loading="eager" decoding="async">
+              <span class="campus-photo-shade"></span>
+              <span class="campus-preview-copy">
+                <span class="campus-preview-tag">商业街</span>
+                <strong>商业街美食</strong>
+                <small>5张校园实景</small>
+              </span>
+            </button>
+            <button class="campus-preview-card campus-preview-action" type="button" data-campus-preview-filter="building" aria-label="查看教学楼群8张校园实景">
+              <img src="https://cdn.jsdelivr.net/gh/qiyu03340-boop/xiao7-campus@e7052785d9af25bb2dc8cde4701bed7bbf56c369/assets/images/img-003-d461375acd20.webp" alt="教学楼群" loading="eager" decoding="async">
+              <span class="campus-photo-shade"></span>
+              <span class="campus-preview-copy">
+                <span class="campus-preview-tag">教学楼群</span>
+                <strong>教学楼群</strong>
+                <small>8张校园实景</small>
+              </span>
+            </button>
+            <button class="campus-preview-card campus-preview-action" type="button" data-campus-preview-filter="facility" aria-label="查看文体设施17张校园实景">
+              <img src="https://cdn.jsdelivr.net/gh/qiyu03340-boop/xiao7-campus@e7052785d9af25bb2dc8cde4701bed7bbf56c369/assets/images/img-004-edd360fb0238.webp" alt="文体设施" loading="eager" decoding="async">
+              <span class="campus-photo-shade"></span>
+              <span class="campus-preview-copy">
+                <span class="campus-preview-tag">文体设施</span>
+                <strong>文体设施</strong>
+                <small>17张校园实景</small>
+              </span>
+            </button>
+          </div>
+
+          <button class="campus-browse-btn" type="button" id="campusGalleryToggle" aria-expanded="false" aria-controls="campusGalleryExpanded">
+            <span id="campusGalleryToggleText">浏览全部 46 张校园实景</span>
+            <span class="campus-browse-arrow" aria-hidden="true">›</span>
+          </button>
+
+          <div class="campus-gallery-expanded" id="campusGalleryExpanded" hidden>
+            <div class="campus-filter-head">
+              <div>
+                <strong>校园实景图集</strong>
+                <small>点击图片可查看大图，当前显示 <span id="campusVisibleCount">46</span> 张。</small>
+              </div>
+              <span class="campus-view-hint">共 46 张</span>
+            </div>
+            <div class="campus-filter-bar" role="tablist" aria-label="校园实景分类筛选">
+              <button class="campus-filter-chip active" type="button" data-campus-filter="all" role="tab" aria-selected="true">全部 <span>46</span></button>
+              <button class="campus-filter-chip" type="button" data-campus-filter="street" role="tab" aria-selected="false">商业街 <span>5</span></button>
+              <button class="campus-filter-chip" type="button" data-campus-filter="building" role="tab" aria-selected="false">教学楼群 <span>8</span></button>
+              <button class="campus-filter-chip" type="button" data-campus-filter="facility" role="tab" aria-selected="false">文体设施 <span>17</span></button>
+              <button class="campus-filter-chip" type="button" data-campus-filter="dormitory" role="tab" aria-selected="false">宿舍书院 <span>9</span></button>
+              <button class="campus-filter-chip" type="button" data-campus-filter="scenery" role="tab" aria-selected="false">校园风景 <span>5</span></button>
+              <button class="campus-filter-chip" type="button" data-campus-filter="service" role="tab" aria-selected="false">校园服务 <span>2</span></button>
+            </div>
+            <div class="campus-grid" aria-live="polite">
+              <button class="campus-photo-card" type="button" data-campus-category="street" data-campus-title="肯德基" data-campus-note="商业街">
+                <img src="https://cdn.jsdelivr.net/gh/qiyu03340-boop/xiao7-campus@e7052785d9af25bb2dc8cde4701bed7bbf56c369/assets/images/img-002-989dfa72d81a.webp" alt="肯德基" loading="eager" decoding="async">
+                <span class="campus-photo-shade"></span>
+                <span class="campus-photo-copy">
+                  <span class="campus-photo-tag">商业街</span>
+                  <strong>肯德基</strong>
+                  <small>商业街</small>
+                </span>
+                <span class="campus-photo-zoom" aria-hidden="true">+</span>
+              </button>
+              <button class="campus-photo-card" type="button" data-campus-category="street" data-campus-title="蜜雪冰城" data-campus-note="商业街">
+                <img src="https://cdn.jsdelivr.net/gh/qiyu03340-boop/xiao7-campus@e7052785d9af25bb2dc8cde4701bed7bbf56c369/assets/images/img-005-7b631d61838a.webp" alt="蜜雪冰城" loading="eager" decoding="async">
+                <span class="campus-photo-shade"></span>
+                <span class="campus-photo-copy">
+                  <span class="campus-photo-tag">商业街</span>
+                  <strong>蜜雪冰城</strong>
+                  <small>商业街</small>
+                </span>
+                <span class="campus-photo-zoom" aria-hidden="true">+</span>
+              </button>
+              <button class="campus-photo-card" type="button" data-campus-category="street" data-campus-title="疯狂烤鸡" data-campus-note="商业街">
+                <img src="https://cdn.jsdelivr.net/gh/qiyu03340-boop/xiao7-campus@e7052785d9af25bb2dc8cde4701bed7bbf56c369/assets/images/img-006-f5473da1f7a6.webp" alt="疯狂烤鸡" loading="eager" decoding="async">
+                <span class="campus-photo-shade"></span>
+                <span class="campus-photo-copy">
+                  <span class="campus-photo-tag">商业街</span>
+                  <strong>疯狂烤鸡</strong>
+                  <small>商业街</small>
+                </span>
+                <span class="campus-photo-zoom" aria-hidden="true">+</span>
+              </button>
+              <button class="campus-photo-card" type="button" data-campus-category="building" data-campus-title="40号楼" data-campus-note="校园楼栋外景">
+                <img src="https://cdn.jsdelivr.net/gh/qiyu03340-boop/xiao7-campus@e7052785d9af25bb2dc8cde4701bed7bbf56c369/assets/images/img-007-5e3e1f1769c0.webp" alt="40号楼" loading="eager" decoding="async">
+                <span class="campus-photo-shade"></span>
+                <span class="campus-photo-copy">
+                  <span class="campus-photo-tag">教学楼群</span>
+                  <strong>40号楼</strong>
+                  <small>校园楼栋外景</small>
+                </span>
+                <span class="campus-photo-zoom" aria-hidden="true">+</span>
+              </button>
+              <button class="campus-photo-card" type="button" data-campus-category="building" data-campus-title="工匠楼" data-campus-note="教学楼外景">
+                <img src="https://cdn.jsdelivr.net/gh/qiyu03340-boop/xiao7-campus@e7052785d9af25bb2dc8cde4701bed7bbf56c369/assets/images/img-008-162e261a52cf.webp" alt="工匠楼" loading="eager" decoding="async">
+                <span class="campus-photo-shade"></span>
+                <span class="campus-photo-copy">
+                  <span class="campus-photo-tag">教学楼群</span>
+                  <strong>工匠楼</strong>
+                  <small>教学楼外景</small>
+                </span>
+                <span class="campus-photo-zoom" aria-hidden="true">+</span>
+              </button>
+              <button class="campus-photo-card" type="button" data-campus-category="building" data-campus-title="勤政楼" data-campus-note="行政办公楼外景">
+                <img src="https://cdn.jsdelivr.net/gh/qiyu03340-boop/xiao7-campus@e7052785d9af25bb2dc8cde4701bed7bbf56c369/assets/images/img-009-b089ab498b07.webp" alt="勤政楼" loading="eager" decoding="async">
+                <span class="campus-photo-shade"></span>
+                <span class="campus-photo-copy">
+                  <span class="campus-photo-tag">教学楼群</span>
+                  <strong>勤政楼</strong>
+                  <small>行政办公楼外景</small>
+                </span>
+                <span class="campus-photo-zoom" aria-hidden="true">+</span>
+              </button>
+              <button class="campus-photo-card" type="button" data-campus-category="building" data-campus-title="药学楼" data-campus-note="教学楼外景">
+                <img src="https://cdn.jsdelivr.net/gh/qiyu03340-boop/xiao7-campus@e7052785d9af25bb2dc8cde4701bed7bbf56c369/assets/images/img-003-d461375acd20.webp" alt="药学楼" loading="eager" decoding="async">
+                <span class="campus-photo-shade"></span>
+                <span class="campus-photo-copy">
+                  <span class="campus-photo-tag">教学楼群</span>
+                  <strong>药学楼</strong>
+                  <small>教学楼外景</small>
+                </span>
+                <span class="campus-photo-zoom" aria-hidden="true">+</span>
+              </button>
+              <button class="campus-photo-card" type="button" data-campus-category="building" data-campus-title="博雅A" data-campus-note="在药学楼对面">
+                <img src="https://cdn.jsdelivr.net/gh/qiyu03340-boop/xiao7-campus@e7052785d9af25bb2dc8cde4701bed7bbf56c369/assets/images/img-010-8f62c7af1a19.webp" alt="博雅A" loading="eager" decoding="async">
+                <span class="campus-photo-shade"></span>
+                <span class="campus-photo-copy">
+                  <span class="campus-photo-tag">教学楼群</span>
+                  <strong>博雅A</strong>
+                  <small>在药学楼对面</small>
+                </span>
+                <span class="campus-photo-zoom" aria-hidden="true">+</span>
+              </button>
+              <button class="campus-photo-card" type="button" data-campus-category="building" data-campus-title="博雅C" data-campus-note="教学楼外景">
+                <img src="https://cdn.jsdelivr.net/gh/qiyu03340-boop/xiao7-campus@e7052785d9af25bb2dc8cde4701bed7bbf56c369/assets/images/img-011-17d8af1009ec.webp" alt="博雅C" loading="eager" decoding="async">
+                <span class="campus-photo-shade"></span>
+                <span class="campus-photo-copy">
+                  <span class="campus-photo-tag">教学楼群</span>
+                  <strong>博雅C</strong>
+                  <small>教学楼外景</small>
+                </span>
+                <span class="campus-photo-zoom" aria-hidden="true">+</span>
+              </button>
+              <button class="campus-photo-card" type="button" data-campus-category="building" data-campus-title="博雅D" data-campus-note="教学楼外景">
+                <img src="https://cdn.jsdelivr.net/gh/qiyu03340-boop/xiao7-campus@e7052785d9af25bb2dc8cde4701bed7bbf56c369/assets/images/img-012-750c0ef7bda7.webp" alt="博雅D" loading="eager" decoding="async">
+                <span class="campus-photo-shade"></span>
+                <span class="campus-photo-copy">
+                  <span class="campus-photo-tag">教学楼群</span>
+                  <strong>博雅D</strong>
+                  <small>教学楼外景</small>
+                </span>
+                <span class="campus-photo-zoom" aria-hidden="true">+</span>
+              </button>
+              <button class="campus-photo-card" type="button" data-campus-category="facility" data-campus-title="岭南影院" data-campus-note="内部场景">
+                <img src="https://cdn.jsdelivr.net/gh/qiyu03340-boop/xiao7-campus@e7052785d9af25bb2dc8cde4701bed7bbf56c369/assets/images/img-013-2f6c07652ab3.webp" alt="岭南影院" loading="eager" decoding="async">
+                <span class="campus-photo-shade"></span>
+                <span class="campus-photo-copy">
+                  <span class="campus-photo-tag">文体设施</span>
+                  <strong>岭南影院</strong>
+                  <small>内部场景</small>
+                </span>
+                <span class="campus-photo-zoom" aria-hidden="true">+</span>
+              </button>
+              <button class="campus-photo-card" type="button" data-campus-category="facility" data-campus-title="篮球场" data-campus-note="运动场地">
+                <img src="https://cdn.jsdelivr.net/gh/qiyu03340-boop/xiao7-campus@e7052785d9af25bb2dc8cde4701bed7bbf56c369/assets/images/img-014-479036d04413.webp" alt="篮球场" loading="eager" decoding="async">
+                <span class="campus-photo-shade"></span>
+                <span class="campus-photo-copy">
+                  <span class="campus-photo-tag">文体设施</span>
+                  <strong>篮球场</strong>
+                  <small>运动场地</small>
+                </span>
+                <span class="campus-photo-zoom" aria-hidden="true">+</span>
+              </button>
+              <button class="campus-photo-card" type="button" data-campus-category="facility" data-campus-title="游泳池" data-campus-note="体育馆二楼">
+                <img src="https://cdn.jsdelivr.net/gh/qiyu03340-boop/xiao7-campus@e7052785d9af25bb2dc8cde4701bed7bbf56c369/assets/images/img-015-7fbcae09265f.webp" alt="游泳池" loading="eager" decoding="async">
+                <span class="campus-photo-shade"></span>
+                <span class="campus-photo-copy">
+                  <span class="campus-photo-tag">文体设施</span>
+                  <strong>游泳池</strong>
+                  <small>体育馆二楼</small>
+                </span>
+                <span class="campus-photo-zoom" aria-hidden="true">+</span>
+              </button>
+              <button class="campus-photo-card" type="button" data-campus-category="facility" data-campus-title="体育馆" data-campus-note="内部场景">
+                <img src="https://cdn.jsdelivr.net/gh/qiyu03340-boop/xiao7-campus@e7052785d9af25bb2dc8cde4701bed7bbf56c369/assets/images/img-004-edd360fb0238.webp" alt="体育馆" loading="eager" decoding="async">
+                <span class="campus-photo-shade"></span>
+                <span class="campus-photo-copy">
+                  <span class="campus-photo-tag">文体设施</span>
+                  <strong>体育馆</strong>
+                  <small>内部场景</small>
+                </span>
+                <span class="campus-photo-zoom" aria-hidden="true">+</span>
+              </button>
+              <button class="campus-photo-card" type="button" data-campus-category="facility" data-campus-title="乒乓球区" data-campus-note="体育馆内">
+                <img src="https://cdn.jsdelivr.net/gh/qiyu03340-boop/xiao7-campus@e7052785d9af25bb2dc8cde4701bed7bbf56c369/assets/images/img-016-ef3194c6cda8.webp" alt="乒乓球区" loading="eager" decoding="async">
+                <span class="campus-photo-shade"></span>
+                <span class="campus-photo-copy">
+                  <span class="campus-photo-tag">文体设施</span>
+                  <strong>乒乓球区</strong>
+                  <small>体育馆内</small>
+                </span>
+                <span class="campus-photo-zoom" aria-hidden="true">+</span>
+              </button>
+              <button class="campus-photo-card" type="button" data-campus-category="facility" data-campus-title="羽毛球区" data-campus-note="体育馆内">
+                <img src="https://cdn.jsdelivr.net/gh/qiyu03340-boop/xiao7-campus@e7052785d9af25bb2dc8cde4701bed7bbf56c369/assets/images/img-017-a21ddd64097d.webp" alt="羽毛球区" loading="eager" decoding="async">
+                <span class="campus-photo-shade"></span>
+                <span class="campus-photo-copy">
+                  <span class="campus-photo-tag">文体设施</span>
+                  <strong>羽毛球区</strong>
+                  <small>体育馆内</small>
+                </span>
+                <span class="campus-photo-zoom" aria-hidden="true">+</span>
+              </button>
+              <button class="campus-photo-card" type="button" data-campus-category="facility" data-campus-title="健身房" data-campus-note="操场旁边">
+                <img src="https://cdn.jsdelivr.net/gh/qiyu03340-boop/xiao7-campus@e7052785d9af25bb2dc8cde4701bed7bbf56c369/assets/images/img-018-e121ce323e15.webp" alt="健身房" loading="eager" decoding="async">
+                <span class="campus-photo-shade"></span>
+                <span class="campus-photo-copy">
+                  <span class="campus-photo-tag">文体设施</span>
+                  <strong>健身房</strong>
+                  <small>操场旁边</small>
+                </span>
+                <span class="campus-photo-zoom" aria-hidden="true">+</span>
+              </button>
+              <button class="campus-photo-card" type="button" data-campus-category="facility" data-campus-title="游泳池" data-campus-note="校园泳池全景">
+                <img src="https://cdn.jsdelivr.net/gh/qiyu03340-boop/xiao7-campus@e7052785d9af25bb2dc8cde4701bed7bbf56c369/assets/images/img-019-3471c2501e43.webp" alt="游泳池" loading="eager" decoding="async">
+                <span class="campus-photo-shade"></span>
+                <span class="campus-photo-copy">
+                  <span class="campus-photo-tag">文体设施</span>
+                  <strong>游泳池</strong>
+                  <small>校园泳池全景</small>
+                </span>
+                <span class="campus-photo-zoom" aria-hidden="true">+</span>
+              </button>
+              <button class="campus-photo-card" type="button" data-campus-category="dormitory" data-campus-title="崇礼宿舍大门" data-campus-note="崇礼书院宿舍入口">
+                <img src="https://cdn.jsdelivr.net/gh/qiyu03340-boop/xiao7-campus@e7052785d9af25bb2dc8cde4701bed7bbf56c369/assets/images/img-020-314bdc1d2fad.webp" alt="崇礼宿舍大门" loading="eager" decoding="async">
+                <span class="campus-photo-shade"></span>
+                <span class="campus-photo-copy">
+                  <span class="campus-photo-tag">宿舍书院</span>
+                  <strong>崇礼宿舍大门</strong>
+                  <small>崇礼书院宿舍入口</small>
+                </span>
+                <span class="campus-photo-zoom" aria-hidden="true">+</span>
+              </button>
+              <button class="campus-photo-card" type="button" data-campus-category="street" data-campus-title="商业街" data-campus-note="校园商业街实景">
+                <img src="https://cdn.jsdelivr.net/gh/qiyu03340-boop/xiao7-campus@e7052785d9af25bb2dc8cde4701bed7bbf56c369/assets/images/img-021-db02c5158021.webp" alt="商业街" loading="eager" decoding="async">
+                <span class="campus-photo-shade"></span>
+                <span class="campus-photo-copy">
+                  <span class="campus-photo-tag">商业街</span>
+                  <strong>商业街</strong>
+                  <small>校园商业街实景</small>
+                </span>
+                <span class="campus-photo-zoom" aria-hidden="true">+</span>
+              </button>
+              <button class="campus-photo-card" type="button" data-campus-category="scenery" data-campus-title="猫学长" data-campus-note="校园草地上的猫咪">
+                <img src="https://cdn.jsdelivr.net/gh/qiyu03340-boop/xiao7-campus@e7052785d9af25bb2dc8cde4701bed7bbf56c369/assets/images/img-022-8bb0b5dd94a2.webp" alt="猫学长" loading="eager" decoding="async">
+                <span class="campus-photo-shade"></span>
+                <span class="campus-photo-copy">
+                  <span class="campus-photo-tag">校园风景</span>
+                  <strong>猫学长</strong>
+                  <small>校园草地上的猫咪</small>
+                </span>
+                <span class="campus-photo-zoom" aria-hidden="true">+</span>
+              </button>
+              <button class="campus-photo-card" type="button" data-campus-category="scenery" data-campus-title="校园风景" data-campus-note="宿舍走廊夕阳">
+                <img src="https://cdn.jsdelivr.net/gh/qiyu03340-boop/xiao7-campus@e7052785d9af25bb2dc8cde4701bed7bbf56c369/assets/images/img-023-d5a005762627.webp" alt="校园风景" loading="eager" decoding="async">
+                <span class="campus-photo-shade"></span>
+                <span class="campus-photo-copy">
+                  <span class="campus-photo-tag">校园风景</span>
+                  <strong>校园风景</strong>
+                  <small>宿舍走廊夕阳</small>
+                </span>
+                <span class="campus-photo-zoom" aria-hidden="true">+</span>
+              </button>
+              <button class="campus-photo-card" type="button" data-campus-category="scenery" data-campus-title="校园风景" data-campus-note="校园晚霞">
+                <img src="https://cdn.jsdelivr.net/gh/qiyu03340-boop/xiao7-campus@e7052785d9af25bb2dc8cde4701bed7bbf56c369/assets/images/img-024-35713c29c686.webp" alt="校园风景" loading="eager" decoding="async">
+                <span class="campus-photo-shade"></span>
+                <span class="campus-photo-copy">
+                  <span class="campus-photo-tag">校园风景</span>
+                  <strong>校园风景</strong>
+                  <small>校园晚霞</small>
+                </span>
+                <span class="campus-photo-zoom" aria-hidden="true">+</span>
+              </button>
+              <button class="campus-photo-card" type="button" data-campus-category="service" data-campus-title="学校快递站" data-campus-note="校内快递服务点">
+                <img src="https://cdn.jsdelivr.net/gh/qiyu03340-boop/xiao7-campus@e7052785d9af25bb2dc8cde4701bed7bbf56c369/assets/images/img-025-5623e35c3904.webp" alt="学校快递站" loading="eager" decoding="async">
+                <span class="campus-photo-shade"></span>
+                <span class="campus-photo-copy">
+                  <span class="campus-photo-tag">校园服务</span>
+                  <strong>学校快递站</strong>
+                  <small>校内快递服务点</small>
+                </span>
+                <span class="campus-photo-zoom" aria-hidden="true">+</span>
+              </button>
+              <button class="campus-photo-card" type="button" data-campus-category="scenery" data-campus-title="校园大门（南门）" data-campus-note="学校南门夜景">
+                <img src="https://cdn.jsdelivr.net/gh/qiyu03340-boop/xiao7-campus@e7052785d9af25bb2dc8cde4701bed7bbf56c369/assets/images/img-026-87a237fdeff7.webp" alt="校园大门（南门）" loading="eager" decoding="async">
+                <span class="campus-photo-shade"></span>
+                <span class="campus-photo-copy">
+                  <span class="campus-photo-tag">校园风景</span>
+                  <strong>校园大门（南门）</strong>
+                  <small>学校南门夜景</small>
+                </span>
+                <span class="campus-photo-zoom" aria-hidden="true">+</span>
+              </button>
+              <button class="campus-photo-card" type="button" data-campus-category="dormitory" data-campus-title="至善书院" data-campus-note="至善书院楼栋外景">
+                <img src="https://cdn.jsdelivr.net/gh/qiyu03340-boop/xiao7-campus@e7052785d9af25bb2dc8cde4701bed7bbf56c369/assets/images/img-027-828a135553fc.webp" alt="至善书院" loading="eager" decoding="async">
+                <span class="campus-photo-shade"></span>
+                <span class="campus-photo-copy">
+                  <span class="campus-photo-tag">宿舍书院</span>
+                  <strong>至善书院</strong>
+                  <small>至善书院楼栋外景</small>
+                </span>
+                <span class="campus-photo-zoom" aria-hidden="true">+</span>
+              </button>
+              <button class="campus-photo-card" type="button" data-campus-category="scenery" data-campus-title="校园风景" data-campus-note="雨后校园道路">
+                <img src="https://cdn.jsdelivr.net/gh/qiyu03340-boop/xiao7-campus@e7052785d9af25bb2dc8cde4701bed7bbf56c369/assets/images/img-028-bd624e75f0b8.webp" alt="校园风景" loading="eager" decoding="async">
+                <span class="campus-photo-shade"></span>
+                <span class="campus-photo-copy">
+                  <span class="campus-photo-tag">校园风景</span>
+                  <strong>校园风景</strong>
+                  <small>雨后校园道路</small>
+                </span>
+                <span class="campus-photo-zoom" aria-hidden="true">+</span>
+              </button>
+              <button class="campus-photo-card" type="button" data-campus-category="dormitory" data-campus-title="至善书院（宿舍）" data-campus-note="宿舍内部实景">
+                <img src="https://cdn.jsdelivr.net/gh/qiyu03340-boop/xiao7-campus@e7052785d9af25bb2dc8cde4701bed7bbf56c369/assets/images/img-029-c9a46179d08b.webp" alt="至善书院（宿舍）" loading="eager" decoding="async">
+                <span class="campus-photo-shade"></span>
+                <span class="campus-photo-copy">
+                  <span class="campus-photo-tag">宿舍书院</span>
+                  <strong>至善书院（宿舍）</strong>
+                  <small>宿舍内部实景</small>
+                </span>
+                <span class="campus-photo-zoom" aria-hidden="true">+</span>
+              </button>
+              <button class="campus-photo-card" type="button" data-campus-category="facility" data-campus-title="体育馆" data-campus-note="主馆篮球场">
+                <img src="https://cdn.jsdelivr.net/gh/qiyu03340-boop/xiao7-campus@e7052785d9af25bb2dc8cde4701bed7bbf56c369/assets/images/img-030-3db98284dab2.webp" alt="体育馆" loading="eager" decoding="async">
+                <span class="campus-photo-shade"></span>
+                <span class="campus-photo-copy">
+                  <span class="campus-photo-tag">文体设施</span>
+                  <strong>体育馆</strong>
+                  <small>主馆篮球场</small>
+                </span>
+                <span class="campus-photo-zoom" aria-hidden="true">+</span>
+              </button>
+              <button class="campus-photo-card" type="button" data-campus-category="facility" data-campus-title="体育馆" data-campus-note="篮球馆入口">
+                <img src="https://cdn.jsdelivr.net/gh/qiyu03340-boop/xiao7-campus@e7052785d9af25bb2dc8cde4701bed7bbf56c369/assets/images/img-031-37b8c0897daf.webp" alt="体育馆" loading="eager" decoding="async">
+                <span class="campus-photo-shade"></span>
+                <span class="campus-photo-copy">
+                  <span class="campus-photo-tag">文体设施</span>
+                  <strong>体育馆</strong>
+                  <small>篮球馆入口</small>
+                </span>
+                <span class="campus-photo-zoom" aria-hidden="true">+</span>
+              </button>
+              <button class="campus-photo-card" type="button" data-campus-category="service" data-campus-title="驾校（校内）" data-campus-note="校内驾校服务点">
+                <img src="https://cdn.jsdelivr.net/gh/qiyu03340-boop/xiao7-campus@e7052785d9af25bb2dc8cde4701bed7bbf56c369/assets/images/img-032-830407bc53b3.webp" alt="驾校（校内）" loading="eager" decoding="async">
+                <span class="campus-photo-shade"></span>
+                <span class="campus-photo-copy">
+                  <span class="campus-photo-tag">校园服务</span>
+                  <strong>驾校（校内）</strong>
+                  <small>校内驾校服务点</small>
+                </span>
+                <span class="campus-photo-zoom" aria-hidden="true">+</span>
+              </button>
+              <button class="campus-photo-card" type="button" data-campus-category="facility" data-campus-title="健身房" data-campus-note="岭南运美健身中心前台">
+                <img src="https://cdn.jsdelivr.net/gh/qiyu03340-boop/xiao7-campus@e7052785d9af25bb2dc8cde4701bed7bbf56c369/assets/images/img-033-4c8674b562dd.webp" alt="健身房" loading="eager" decoding="async">
+                <span class="campus-photo-shade"></span>
+                <span class="campus-photo-copy">
+                  <span class="campus-photo-tag">文体设施</span>
+                  <strong>健身房</strong>
+                  <small>岭南运美健身中心前台</small>
+                </span>
+                <span class="campus-photo-zoom" aria-hidden="true">+</span>
+              </button>
+              <button class="campus-photo-card" type="button" data-campus-category="facility" data-campus-title="健身房（入口）" data-campus-note="健身房内部入口">
+                <img src="https://cdn.jsdelivr.net/gh/qiyu03340-boop/xiao7-campus@e7052785d9af25bb2dc8cde4701bed7bbf56c369/assets/images/img-034-9adddc1e81a7.webp" alt="健身房（入口）" loading="eager" decoding="async">
+                <span class="campus-photo-shade"></span>
+                <span class="campus-photo-copy">
+                  <span class="campus-photo-tag">文体设施</span>
+                  <strong>健身房（入口）</strong>
+                  <small>健身房内部入口</small>
+                </span>
+                <span class="campus-photo-zoom" aria-hidden="true">+</span>
+              </button>
+              <button class="campus-photo-card" type="button" data-campus-category="facility" data-campus-title="体育馆（副馆）" data-campus-note="乒乓球训练区">
+                <img src="https://cdn.jsdelivr.net/gh/qiyu03340-boop/xiao7-campus@e7052785d9af25bb2dc8cde4701bed7bbf56c369/assets/images/img-035-37d8178395c8.webp" alt="体育馆（副馆）" loading="eager" decoding="async">
+                <span class="campus-photo-shade"></span>
+                <span class="campus-photo-copy">
+                  <span class="campus-photo-tag">文体设施</span>
+                  <strong>体育馆（副馆）</strong>
+                  <small>乒乓球训练区</small>
+                </span>
+                <span class="campus-photo-zoom" aria-hidden="true">+</span>
+              </button>
+              <button class="campus-photo-card" type="button" data-campus-category="dormitory" data-campus-title="普通宿舍" data-campus-note="普通宿舍内部实景">
+                <img src="https://cdn.jsdelivr.net/gh/qiyu03340-boop/xiao7-campus@e7052785d9af25bb2dc8cde4701bed7bbf56c369/assets/images/img-036-7989089044e2.webp" alt="普通宿舍" loading="eager" decoding="async">
+                <span class="campus-photo-shade"></span>
+                <span class="campus-photo-copy">
+                  <span class="campus-photo-tag">宿舍书院</span>
+                  <strong>普通宿舍</strong>
+                  <small>普通宿舍内部实景</small>
+                </span>
+                <span class="campus-photo-zoom" aria-hidden="true">+</span>
+              </button>
+              <button class="campus-photo-card" type="button" data-campus-category="street" data-campus-title="零食店" data-campus-note="校园零食店">
+                <img src="https://cdn.jsdelivr.net/gh/qiyu03340-boop/xiao7-campus@e7052785d9af25bb2dc8cde4701bed7bbf56c369/assets/images/img-037-28721aa80ab3.webp" alt="零食店" loading="eager" decoding="async">
+                <span class="campus-photo-shade"></span>
+                <span class="campus-photo-copy">
+                  <span class="campus-photo-tag">商业街</span>
+                  <strong>零食店</strong>
+                  <small>校园零食店</small>
+                </span>
+                <span class="campus-photo-zoom" aria-hidden="true">+</span>
+              </button>
+              <button class="campus-photo-card" type="button" data-campus-category="facility" data-campus-title="游泳池" data-campus-note="校园游泳池">
+                <img src="https://cdn.jsdelivr.net/gh/qiyu03340-boop/xiao7-campus@e7052785d9af25bb2dc8cde4701bed7bbf56c369/assets/images/img-038-8fc80eed074f.webp" alt="游泳池" loading="eager" decoding="async">
+                <span class="campus-photo-shade"></span>
+                <span class="campus-photo-copy">
+                  <span class="campus-photo-tag">文体设施</span>
+                  <strong>游泳池</strong>
+                  <small>校园游泳池</small>
+                </span>
+                <span class="campus-photo-zoom" aria-hidden="true">+</span>
+              </button>
+              <button class="campus-photo-card" type="button" data-campus-category="facility" data-campus-title="换衣间（游泳池）" data-campus-note="游泳池蓝色更衣柜">
+                <img src="https://cdn.jsdelivr.net/gh/qiyu03340-boop/xiao7-campus@e7052785d9af25bb2dc8cde4701bed7bbf56c369/assets/images/img-039-0acb5e607daa.webp" alt="换衣间（游泳池）" loading="eager" decoding="async">
+                <span class="campus-photo-shade"></span>
+                <span class="campus-photo-copy">
+                  <span class="campus-photo-tag">文体设施</span>
+                  <strong>换衣间（游泳池）</strong>
+                  <small>游泳池蓝色更衣柜</small>
+                </span>
+                <span class="campus-photo-zoom" aria-hidden="true">+</span>
+              </button>
+              <button class="campus-photo-card" type="button" data-campus-category="facility" data-campus-title="游泳池（换衣间）" data-campus-note="游泳池粉色更衣柜">
+                <img src="https://cdn.jsdelivr.net/gh/qiyu03340-boop/xiao7-campus@e7052785d9af25bb2dc8cde4701bed7bbf56c369/assets/images/img-040-b6776bf355e9.webp" alt="游泳池（换衣间）" loading="eager" decoding="async">
+                <span class="campus-photo-shade"></span>
+                <span class="campus-photo-copy">
+                  <span class="campus-photo-tag">文体设施</span>
+                  <strong>游泳池（换衣间）</strong>
+                  <small>游泳池粉色更衣柜</small>
+                </span>
+                <span class="campus-photo-zoom" aria-hidden="true">+</span>
+              </button>
+              <button class="campus-photo-card" type="button" data-campus-category="building" data-campus-title="教室" data-campus-note="教室内部实景">
+                <img src="https://cdn.jsdelivr.net/gh/qiyu03340-boop/xiao7-campus@e7052785d9af25bb2dc8cde4701bed7bbf56c369/assets/images/img-041-5c4911e57fe6.webp" alt="教室" loading="eager" decoding="async">
+                <span class="campus-photo-shade"></span>
+                <span class="campus-photo-copy">
+                  <span class="campus-photo-tag">教学楼群</span>
+                  <strong>教室</strong>
+                  <small>教室内部实景</small>
+                </span>
+                <span class="campus-photo-zoom" aria-hidden="true">+</span>
+              </button>
+              <button class="campus-photo-card" type="button" data-campus-category="facility" data-campus-title="健身房（门口）" data-campus-note="岭南运美健身中心门口">
+                <img src="https://cdn.jsdelivr.net/gh/qiyu03340-boop/xiao7-campus@e7052785d9af25bb2dc8cde4701bed7bbf56c369/assets/images/img-042-bba13834c7f0.webp" alt="健身房（门口）" loading="eager" decoding="async">
+                <span class="campus-photo-shade"></span>
+                <span class="campus-photo-copy">
+                  <span class="campus-photo-tag">文体设施</span>
+                  <strong>健身房（门口）</strong>
+                  <small>岭南运美健身中心门口</small>
+                </span>
+                <span class="campus-photo-zoom" aria-hidden="true">+</span>
+              </button>
+              <button class="campus-photo-card" type="button" data-campus-category="dormitory" data-campus-title="崇礼书院" data-campus-note="书院楼入口实景">
+                <img src="https://cdn.jsdelivr.net/gh/qiyu03340-boop/xiao7-campus@e7052785d9af25bb2dc8cde4701bed7bbf56c369/assets/images/img-043-2841152d801f.webp" alt="崇礼书院" loading="eager" decoding="async">
+                <span class="campus-photo-shade"></span>
+                <span class="campus-photo-copy">
+                  <span class="campus-photo-tag">宿舍书院</span>
+                  <strong>崇礼书院</strong>
+                  <small>书院楼入口实景</small>
+                </span>
+                <span class="campus-photo-zoom" aria-hidden="true">+</span>
+              </button>
+              <button class="campus-photo-card" type="button" data-campus-category="dormitory" data-campus-title="励能书院" data-campus-note="书院正门实景">
+                <img src="https://cdn.jsdelivr.net/gh/qiyu03340-boop/xiao7-campus@e7052785d9af25bb2dc8cde4701bed7bbf56c369/assets/images/img-044-7bc749fabc70.webp" alt="励能书院" loading="eager" decoding="async">
+                <span class="campus-photo-shade"></span>
+                <span class="campus-photo-copy">
+                  <span class="campus-photo-tag">宿舍书院</span>
+                  <strong>励能书院</strong>
+                  <small>书院正门实景</small>
+                </span>
+                <span class="campus-photo-zoom" aria-hidden="true">+</span>
+              </button>
+              <button class="campus-photo-card" type="button" data-campus-category="dormitory" data-campus-title="笃学书院" data-campus-note="书院楼外景">
+                <img src="https://cdn.jsdelivr.net/gh/qiyu03340-boop/xiao7-campus@e7052785d9af25bb2dc8cde4701bed7bbf56c369/assets/images/img-045-b643037e2588.webp" alt="笃学书院" loading="eager" decoding="async">
+                <span class="campus-photo-shade"></span>
+                <span class="campus-photo-copy">
+                  <span class="campus-photo-tag">宿舍书院</span>
+                  <strong>笃学书院</strong>
+                  <small>书院楼外景</small>
+                </span>
+                <span class="campus-photo-zoom" aria-hidden="true">+</span>
+              </button>
+              <button class="campus-photo-card" type="button" data-campus-category="dormitory" data-campus-title="思诚书院" data-campus-note="书院楼栋外景">
+                <img src="https://cdn.jsdelivr.net/gh/qiyu03340-boop/xiao7-campus@e7052785d9af25bb2dc8cde4701bed7bbf56c369/assets/images/img-046-cb20befee4a9.webp" alt="思诚书院" loading="eager" decoding="async">
+                <span class="campus-photo-shade"></span>
+                <span class="campus-photo-copy">
+                  <span class="campus-photo-tag">宿舍书院</span>
+                  <strong>思诚书院</strong>
+                  <small>书院楼栋外景</small>
+                </span>
+                <span class="campus-photo-zoom" aria-hidden="true">+</span>
+              </button>
+              <button class="campus-photo-card" type="button" data-campus-category="dormitory" data-campus-title="知行书院" data-campus-note="书院中庭实景">
+                <img src="https://cdn.jsdelivr.net/gh/qiyu03340-boop/xiao7-campus@e7052785d9af25bb2dc8cde4701bed7bbf56c369/assets/images/img-047-ef84d46a7cbe.webp" alt="知行书院" loading="eager" decoding="async">
+                <span class="campus-photo-shade"></span>
+                <span class="campus-photo-copy">
+                  <span class="campus-photo-tag">宿舍书院</span>
+                  <strong>知行书院</strong>
+                  <small>书院中庭实景</small>
+                </span>
+                <span class="campus-photo-zoom" aria-hidden="true">+</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  </section>
+
+  <section class="page" id="aiPage">
+    <div class="ai-layout">
+      <div class="ai-top">
+        <div class="ai-avatar">小7</div>
+        <div class="ai-identity"><strong>小7校园智能知识库</strong><small>清远校区资料检索 · 已收录<span id="kbCount">106</span>组问答</small></div>
+        <span class="status">● 可查询</span>
+      </div>
+      <div class="chat-scroll" id="chatScroll">
+        <div class="msg assistant">
+          <div class="bubble welcome-bubble">
+            <strong>新同学你好呀，我是小7！</strong>
+            我会根据已整理的校园知识库匹配答案；涉及报到、缴费、学籍等重要事项，请再查看学校最新通知。
+          </div>
+        </div>
+        <div class="ai-quick-wrap">
+          <div class="ai-quick-head">
+            <strong>高频问答 <span>17个入口</span></strong>
+            <button type="button" id="faqCatalogBtn">查看全部 <b id="faqCount">106</b> 问 ›</button>
+          </div>
+          <div class="ai-quick">
+            <button class="chip" data-ask="新生什么时候报到？">报到时间</button>
+            <button class="chip" data-ask="怎么交学费？">学费缴纳</button>
+            <button class="chip" data-ask="报到需要带什么证件？">报到证件</button>
+            <button class="chip" data-ask="军训一般多长时间？">军训安排</button>
+            <button class="chip" data-ask="宿舍是几人间？">宿舍人数</button>
+            <button class="chip" data-ask="宿舍晚上会断网断电吗？">宿舍水电</button>
+            <button class="chip" data-ask="宿舍有洗衣机吗？">洗衣机</button>
+            <button class="chip" data-ask="学校快递站在哪里？">快递站</button>
+            <button class="chip" data-ask="学校快递怎么取件？">取件步骤</button>
+            <button class="chip" data-ask="快递站几点关门？">快递时间</button>
+            <button class="chip" data-ask="食堂一顿饭大约多少钱？">食堂价格</button>
+            <button class="chip" data-ask="学校有哪些运动设施？">运动设施</button>
+            <button class="chip" data-ask="学校交通方便吗？">校园交通</button>
+            <button class="chip" data-ask="选修课怎么选？">选课</button>
+            <button class="chip" data-ask="挂科后需要重修吗？">挂科重修</button>
+            <button class="chip" data-ask="一个月生活费大约多少？">生活费</button>
+            <button class="chip" data-ask="学校有校园网吗？">校园网</button>
+          </div>
+        </div>
+      </div>
+      <form class="ai-input" id="aiForm">
+        <input id="aiInput" placeholder="输入你的问题…" autocomplete="off">
+        <button aria-label="发送问题">↑</button>
+      </form>
+    </div>
+  </section>
+
+  <section class="page" id="servicesPage">
+    <header class="page-header">
+      <div><h1>校园服务</h1><small>服务内容与AI答疑相互独立</small></div>
+      <span class="header-badge">清远校区</span>
+    </header>
+    <div class="page-pad">
+      <div class="service-list service-list-four" id="campusServicesList" aria-live="polite"></div>
+    </div>
+  </section>
+
+  <section class="page" id="profilePage">
+    <header class="page-header">
+      <div><h1>联系学姐</h1><small>问题没有解决时提供人工兜底</small></div>
+      <span class="header-badge">微信</span>
+    </header>
+    <div class="page-pad">
+      <div class="profile-card">
+        <div class="ai-avatar">77</div>
+        <div><strong>77学姐</strong><small>小7校园AI人工校园助手</small></div>
+      </div>
+      <div class="qr-card">
+        <h3>扫码添加77学姐</h3>
+        <p>建议添加时备注“学院＋问题类型”，方便更快了解你的需求。</p>
+        <img src="https://cdn.jsdelivr.net/gh/qiyu03340-boop/xiao7-campus@e7052785d9af25bb2dc8cde4701bed7bbf56c369/assets/images/img-048-b4cb425e9ff7.webp" alt="小7校园助手专用微信二维码">
+      </div>
+      <div class="disclaimer"><strong>建议使用“小7校园助手”专用微信：</strong>添加时备注“学院＋年级＋问题”；不处理缴费转账、账号密码、验证码和其他敏感信息。<br><br>小7校园AI为学生自主创建的信息服务平台，并非学校官方系统。页面内容统一标注为“学姐个人经验+官网搜索｜仅供参考”，报到、缴费、考试、学籍、资助等事项请以学校最新通知为准。</div>
+    </div>
+  </section>
+
+  <nav class="bottom-nav" aria-label="底部导航">
+    <button class="nav-btn active" data-tab="home"><span class="nav-ico"><svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m3 11 9-8 9 8"/><path d="M5 10v10h14V10M9 20v-6h6v6"/></svg></span><span>首页</span></button>
+    <button class="nav-btn" data-tab="guide"><span class="nav-ico"><svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4h6a3 3 0 0 1 3 3v13a3 3 0 0 0-3-3H4z"/><path d="M20 4h-6a3 3 0 0 0-3 3v13a3 3 0 0 1 3-3h6z"/></svg></span><span>新生指南</span></button>
+    <button class="nav-btn" data-tab="ai"><span class="nav-ico"><svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="5" width="16" height="14" rx="4"/><path d="M9 10h.01M15 10h.01M8 15h8M12 2v3"/></svg></span><span>AI</span></button>
+    <button class="nav-btn" data-tab="services"><span class="nav-ico"><svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="2"/><rect x="14" y="3" width="7" height="7" rx="2"/><rect x="3" y="14" width="7" height="7" rx="2"/><rect x="14" y="14" width="7" height="7" rx="2"/></svg></span><span>校园服务</span></button>
+    <button class="nav-btn" data-tab="profile"><span class="nav-ico"><svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg></span><span>学姐</span></button>
+  </nav>
+</div>
+
+<div class="modal" id="serviceModal">
+  <div class="sheet">
+    <div class="sheet-handle"></div>
+    <div class="sheet-head">
+      <div><h2 id="sheetTitle">校园服务</h2><p id="sheetIntro"></p></div>
+      <button class="close" id="closeSheet" aria-label="关闭">×</button>
+    </div>
+    <div class="detail-list" id="detailList"></div>
+    <div class="source-note" id="sourceNote"></div>
+  </div>
+</div>
+
+<!-- 新生指南正文只在 data/guide-content.js 维护 -->
+<script src="data/guide-content.js"></script>
+<!-- 校园服务四个入口只在 data/campus-services.js 维护 -->
+<script src="data/campus-services.js"></script>
+<script src="data/knowledge-base.js"></script>
+<script>
+const appShell=document.querySelector('.app-shell');
+const pages={home:document.getElementById('homePage'),guide:document.getElementById('guidePage'),ai:document.getElementById('aiPage'),services:document.getElementById('servicesPage'),profile:document.getElementById('profilePage')};
+const navBtns=[...document.querySelectorAll('.nav-btn')];
+function openTab(name){
+  Object.entries(pages).forEach(([key,page])=>page.classList.toggle('active',key===name));
+  navBtns.forEach(btn=>btn.classList.toggle('active',btn.dataset.tab===name));
+  appShell?.scrollTo(0,0);
+  if(name==='ai') setTimeout(()=>document.getElementById('aiInput').focus(),120);
+}
+document.querySelectorAll('[data-tab]').forEach(btn=>btn.addEventListener('click',()=>openTab(btn.dataset.tab)));
+navBtns.forEach(btn=>btn.addEventListener('click',()=>openTab(btn.dataset.tab)));
+
+const guideContent=window.guideContent||{};
+const campusServices=Array.isArray(window.campusServices)?window.campusServices:[];
+
+const serviceIconPaths={
+  parcel:'<path d="M4 7h16v10H4z"/><path d="M7 7V5h10v2M8 11h8M8 14h5"/>',
+  fitness:'<path d="M7 7h10M5 10h14M7 10v8M17 10v8M4 18h16"/><path d="M9 4v3M15 4v3"/>',
+  group:'<circle cx="9" cy="8" r="3"/><circle cx="17" cy="9" r="2.5"/><path d="M3 20a6 6 0 0 1 12 0M14 20a5 5 0 0 1 7-4.6"/>',
+  shop:'<path d="M4 10h16v10H4z"/><path d="M3 10l2-5h14l2 5"/><path d="M7 10v2a2 2 0 0 0 4 0v-2M11 10v2a2 2 0 0 0 4 0v-2M15 10v2a2 2 0 0 0 4 0v-2"/><path d="M8 20v-5h4v5"/>'
+};
+function serviceIcon(name,large=false){
+  const span=document.createElement('span');span.className=large?'big-icon':'sicon';
+  span.innerHTML=`<svg class="ui-icon" viewBox="0 0 24 24" aria-hidden="true">${serviceIconPaths[name]||serviceIconPaths.shop}</svg>`;
+  return span;
+}
+
+const modal=document.getElementById('serviceModal'), detailList=document.getElementById('detailList');
+function openDetail(data,id){
+  if(!data)return;
+  modal.classList.toggle('major-directory',id==='major');
+  modal.classList.toggle('group-qr',id==='freshmanGroup');
+  document.getElementById('sheetTitle').textContent=data.title;
+  document.getElementById('sheetIntro').textContent=data.intro||'';
+  detailList.innerHTML='';
+  (data.items||[]).forEach(item=>{
+    const box=document.createElement('article');box.className='detail';
+    const title=document.createElement('strong');title.textContent=item.title;box.append(title);
+    if(item.text){const p=document.createElement('p');p.textContent=item.text;box.append(p)}
+    if(item.list){const ul=document.createElement('ul');item.list.forEach(x=>{const li=document.createElement('li');li.textContent=x;ul.append(li)});box.append(ul)}
+    if(item.gallery){
+      const gallery=document.createElement('div');gallery.className='detail-gallery';
+      item.gallery.forEach(photo=>{
+        const figure=document.createElement('figure');figure.className='detail-photo';
+        const img=document.createElement('img');img.src=photo.src;img.alt=photo.name;
+        const cap=document.createElement('figcaption');
+        const name=document.createElement('b');name.textContent=photo.name;
+        const meta=document.createElement('span');meta.textContent=photo.meta;
+        cap.append(name,meta);figure.append(img,cap);gallery.append(figure);
+      });
+      box.append(gallery);
+    }
+    detailList.append(box);
+  });
+  document.getElementById('sourceNote').textContent='信息说明：'+(data.source||'学姐个人经验+官网搜索｜仅供参考')+'。';
+  modal.classList.add('show');
+}
+function openGuideService(id){openDetail(guideContent[id],id)}
+function openCampusService(id){
+  const data=campusServices.find(item=>item.id===id);if(!data)return;
+  if(data.action==='profile'){openTab('profile');return;}
+  openDetail(data,id);
+}
+function renderCampusServices(){
+  const home=document.getElementById('homeCampusServices');
+  const list=document.getElementById('campusServicesList');
+  campusServices.forEach(data=>{
+    if(home){
+      const btn=document.createElement('button');btn.className='service-item';btn.type='button';btn.dataset.campusService=data.id;
+      btn.append(serviceIcon(data.icon),Object.assign(document.createElement('span'),{textContent:data.homeTitle||data.title}));
+      btn.addEventListener('click',()=>openCampusService(data.id));home.append(btn);
+    }
+    if(list){
+      const btn=document.createElement('button');btn.className='service-card';btn.type='button';btn.dataset.campusService=data.id;
+      const title=document.createElement('strong');title.textContent=data.title;
+      const small=document.createElement('small');small.textContent=data.subtitle||'';
+      btn.append(serviceIcon(data.icon,true),title,small);
+      btn.addEventListener('click',()=>openCampusService(data.id));list.append(btn);
+    }
+  });
+}
+renderCampusServices();
+document.querySelectorAll('[data-guide-service]').forEach(btn=>btn.addEventListener('click',()=>openGuideService(btn.dataset.guideService)));
+document.getElementById('closeSheet').addEventListener('click',()=>modal.classList.remove('show'));
+modal.addEventListener('click',e=>{if(e.target===modal)modal.classList.remove('show')});
+
+const knowledgeBase=window.knowledgeBase||[];
+
+function normalize(s){return String(s||'').toLowerCase().replace(/[？?，,。！!：:；;、（）()“”‘’\s]/g,'')}
+function bigrams(s){
+  const n=normalize(s),out=[];
+  if(n.length<2)return n?[n]:[];
+  for(let i=0;i<n.length-1;i++)out.push(n.slice(i,i+2));
+  return [...new Set(out)];
+}
+function findAnswer(question){
+  const q=normalize(question);if(!q)return null;
+  const q2=bigrams(q);let best=null,bestScore=0;
+  knowledgeBase.forEach(a=>{
+    let score=0;
+    (a.questions||[]).forEach(x=>{
+      const n=normalize(x);if(!n)return;
+      if(q===n)score=Math.max(score,160);
+      else if(q.includes(n)||n.includes(q))score=Math.max(score,95+Math.min(q.length,n.length));
+      const n2=bigrams(n);const overlap=q2.filter(g=>n2.includes(g)).length;
+      const ratio=overlap/Math.max(1,Math.min(q2.length,n2.length));
+      score=Math.max(score,Math.round(ratio*70));
+    });
+    if(score>bestScore){bestScore=score;best=a}
+  });
+  return bestScore>=28?best:null;
+}
+const chat=document.getElementById('chatScroll');
+function addUser(text){
+  const row=document.createElement('div');row.className='msg user';
+  const b=document.createElement('div');b.className='bubble';b.textContent=text;row.append(b);chat.append(row);
+}
+function collapseOldAnswers(){
+  chat.querySelectorAll('.answer-content').forEach(x=>x.classList.add('collapsed'));
+  chat.querySelectorAll('.collapse-btn').forEach(x=>x.textContent='展开回答');
+}
+function addTyping(){
+  const row=document.createElement('div');row.className='msg assistant';row.id='typingRow';
+  const b=document.createElement('div');b.className='bubble';b.innerHTML='<span class="typing"><i></i><i></i><i></i></span>';
+  row.append(b);chat.append(row);chat.scrollTop=chat.scrollHeight;
+}
+function addAnswer(a){
+  const row=document.createElement('div');row.className='msg assistant';
+  const card=document.createElement('div');card.className='bubble answer-card';
+  const head=document.createElement('div');head.className='answer-head';
+  const h=document.createElement('h3');h.textContent=a.title;
+  const tag=document.createElement('span');tag.className='status-tag';tag.textContent=a.status;
+  head.append(h,tag);
+  const content=document.createElement('div');content.className='answer-content';
+  const summary=document.createElement('p');summary.className='answer-summary';summary.textContent=a.summary;content.append(summary);
+  if(a.facts){
+    const facts=document.createElement('div');facts.className='facts';
+    a.facts.forEach(([k,v])=>{const f=document.createElement('div');f.className='fact';const k1=document.createElement('span');k1.textContent=k;const v1=document.createElement('span');v1.textContent=v;f.append(k1,v1);facts.append(f)});
+    content.append(facts);
+  }
+  if(a.tips){
+    const ul=document.createElement('ul');ul.className='answer-tips';
+    a.tips.forEach(x=>{const li=document.createElement('li');li.textContent=x;ul.append(li)});content.append(ul);
+  }
+  const meta=document.createElement('div');meta.className='answer-meta';meta.textContent='信息来源：'+a.source+' ｜ 更新：'+(a.updated||'2026-07-27');content.append(meta);
+  const actions=document.createElement('div');actions.className='answer-actions';
+  const feedbackNotice=document.createElement('div');feedbackNotice.className='feedback-notice';feedbackNotice.hidden=true;feedbackNotice.setAttribute('role','status');
+  ['有帮助','没解决','信息有误','联系学姐'].forEach(label=>{
+    const btn=document.createElement('button');btn.textContent=label;
+    btn.addEventListener('click',()=>{
+      if(label==='联系学姐'){openTab('profile');return;}
+      feedbackNotice.textContent=label==='有帮助'
+        ?'反馈功能暂未接入后台。本次操作仅在当前页面提示，不会上传或保存。'
+        :'反馈功能暂未接入后台，本次问题不会被自动记录。请点击“联系学姐”进行人工核实。';
+      feedbackNotice.hidden=false;
+    });
+    actions.append(btn);
+  });
+  content.append(actions,feedbackNotice);
+  const collapse=document.createElement('button');collapse.className='collapse-btn';collapse.textContent='收起回答';
+  collapse.addEventListener('click',()=>{const hidden=content.classList.toggle('collapsed');collapse.textContent=hidden?'展开回答':'收起回答'});
+  card.append(head,content,collapse);row.append(card);chat.append(row);
+  requestAnimationFrame(()=>{
+    const top=Math.max(0,row.offsetTop-10);
+    chat.scrollTo({top,behavior:'smooth'});
+  });
+}
+function ask(question){
+  const text=question.trim();if(!text)return;
+  openTab('ai');collapseOldAnswers();addUser(text);addTyping();
+  setTimeout(()=>{
+    document.getElementById('typingRow')?.remove();
+    const a=findAnswer(text)||{
+      title:'这个问题暂时没有可靠答案',
+      summary:'小7不会为了“有回答”而自行猜测。请补充具体地点、书院、楼栋或业务名称，也可以联系学姐人工核实。',
+      facts:[['建议','换一种更具体的问法或联系人工助手']],
+      tips:['涉及报到、缴费、考试、学籍和资助时，请以学校最新官方通知为准。'],
+      source:'知识库暂未收录',status:'待补充'
+    };
+    addAnswer(a);
+  },520);
+}
+document.querySelectorAll('[data-ask]').forEach(btn=>btn.addEventListener('click',()=>ask(btn.dataset.ask)));
+document.getElementById('homeAskForm').addEventListener('submit',e=>{e.preventDefault();const input=document.getElementById('homeAskInput');ask(input.value);input.value=''});
+document.getElementById('aiForm').addEventListener('submit',e=>{e.preventDefault();const input=document.getElementById('aiInput');ask(input.value);input.value=''});
+
+
+let activeGuideGroup='all';
+const guideSearchInput=document.getElementById('guideSearchInput');
+const guideCards=[...document.querySelectorAll('[data-guide-keywords]')];
+const guideFilters=[...document.querySelectorAll('.guide-filter')];
+function filterGuide(){
+  const q=normalize(guideSearchInput?.value||'');
+  let topicCount=0;
+  guideCards.forEach(card=>{
+    const cardGroups=(card.dataset.guideGroup||'').split(/\s+/).filter(Boolean);
+    const groupOk=activeGuideGroup==='all'||cardGroups.includes(activeGuideGroup);
+    const keywords=normalize((card.dataset.guideKeywords||'')+' '+card.textContent);
+    const searchOk=!q||keywords.includes(q)||[...q].every(ch=>keywords.includes(ch));
+    const show=groupOk&&searchOk;
+    card.hidden=!show;
+    if(show&&card.classList.contains('topic-card'))topicCount++;
+  });
+  const count=document.getElementById('guideResultCount');
+  if(count)count.textContent=topicCount+'项';
+  const empty=document.getElementById('guideEmpty');
+  if(empty)empty.classList.toggle('show',topicCount===0);
+}
+guideFilters.forEach(btn=>btn.addEventListener('click',()=>{
+  activeGuideGroup=btn.dataset.guideGroup;
+  guideFilters.forEach(x=>x.classList.toggle('active',x===btn));
+  filterGuide();
+}));
+document.getElementById('guideSearchForm')?.addEventListener('submit',e=>{e.preventDefault();filterGuide()});
+guideSearchInput?.addEventListener('input',filterGuide);
+filterGuide();
+
+const target=new Date('2026-09-05T00:00:00');
+const diff=Math.ceil((target-new Date())/86400000);
+const daysLeftElement=document.getElementById('daysLeft');
+if(daysLeftElement){
+  daysLeftElement.textContent=(diff>0?diff:0)+' 天';
+}
+
+document.querySelectorAll('[data-check]').forEach(box=>{
+  const key='xiao7-check-'+box.dataset.check;
+  try{
+    box.checked=localStorage.getItem(key)==='1';
+    box.addEventListener('change',()=>localStorage.setItem(key,box.checked?'1':'0'));
+  }catch(error){
+    // Some in-app browsers block localStorage for local files; the page should still work.
+  }
+});
+
+window.addEventListener('error',function(){
+  const home=document.getElementById('homePage');
+  if(home && !document.querySelector('.page.active')){
+    home.classList.add('active');
+  }
+});
+
+</script>
+
+
+  <div class="campus-lightbox" id="campusLightbox" hidden role="dialog" aria-modal="true" aria-labelledby="campusLightboxTitle">
+    <button class="campus-lightbox-close" id="campusLightboxClose" type="button" aria-label="关闭大图">×</button>
+    <div class="campus-lightbox-stage"><img id="campusLightboxImage" src="" alt=""></div>
+    <div class="campus-lightbox-caption"><strong id="campusLightboxTitle"></strong><small id="campusLightboxNote"></small></div>
+  </div>
+  <script>
+  (()=>{
+    const expanded=document.getElementById('campusGalleryExpanded');
+    const toggle=document.getElementById('campusGalleryToggle');
+    const toggleText=document.getElementById('campusGalleryToggleText');
+    const gallerySection=document.getElementById('campusGallerySection');
+    const filterButtons=[...document.querySelectorAll('[data-campus-filter]')];
+    const photoCards=[...document.querySelectorAll('.campus-photo-card')];
+    const visibleCount=document.getElementById('campusVisibleCount');
+    function applyCampusFilter(filter){
+      let count=0;
+      photoCards.forEach(card=>{const show=filter==='all'||card.dataset.campusCategory===filter;card.hidden=!show;if(show)count++;});
+      filterButtons.forEach(btn=>{const active=btn.dataset.campusFilter===filter;btn.classList.toggle('active',active);btn.setAttribute('aria-selected',active?'true':'false');});
+      if(visibleCount)visibleCount.textContent=String(count);
+    }
+    function setExpanded(open){
+      if(!expanded||!toggle)return;
+      expanded.toggleAttribute('hidden',!open);
+      toggle.setAttribute('aria-expanded',open?'true':'false');
+      if(toggleText)toggleText.textContent=open?'收起校园实景图集':'浏览全部 46 张校园实景';
+    }
+    toggle?.addEventListener('click',()=>{const open=expanded?.hasAttribute('hidden');setExpanded(Boolean(open));if(!open)gallerySection?.scrollIntoView({behavior:'smooth',block:'start'});});
+    filterButtons.forEach(btn=>btn.addEventListener('click',()=>applyCampusFilter(btn.dataset.campusFilter)));
+    document.querySelectorAll('[data-campus-preview-filter]').forEach(btn=>btn.addEventListener('click',()=>{setExpanded(true);applyCampusFilter(btn.dataset.campusPreviewFilter);setTimeout(()=>expanded?.scrollIntoView({behavior:'smooth',block:'start'}),40);}));
+    const lightbox=document.getElementById('campusLightbox');
+    const lightboxImage=document.getElementById('campusLightboxImage');
+    const lightboxTitle=document.getElementById('campusLightboxTitle');
+    const lightboxNote=document.getElementById('campusLightboxNote');
+    const lightboxClose=document.getElementById('campusLightboxClose');
+    let lastTrigger=null;
+    function closeCampusLightbox(){if(!lightbox)return;lightbox.setAttribute('hidden','');document.body.classList.remove('campus-lightbox-open');if(lightboxImage)lightboxImage.src='';lastTrigger?.focus();}
+    photoCards.forEach(card=>card.addEventListener('click',()=>{const image=card.querySelector('img');if(!lightbox||!image||!lightboxImage||!lightboxTitle||!lightboxNote)return;lastTrigger=card;lightboxImage.src=image.src;lightboxImage.alt=image.alt;lightboxTitle.textContent=card.dataset.campusTitle||image.alt;lightboxNote.textContent=card.dataset.campusNote||'';lightbox.removeAttribute('hidden');document.body.classList.add('campus-lightbox-open');lightboxClose?.focus();}));
+    lightboxClose?.addEventListener('click',closeCampusLightbox);
+    lightbox?.addEventListener('click',e=>{if(e.target===lightbox)closeCampusLightbox()});
+    document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!lightbox?.hasAttribute('hidden'))closeCampusLightbox()});
+    applyCampusFilter('all');
+  })();
+  </script>
+
+
+<div class="faq-catalog" id="faqCatalog" hidden role="dialog" aria-modal="true" aria-labelledby="faqCatalogTitle">
+  <div class="faq-catalog-panel">
+    <div class="faq-catalog-head">
+      <div><strong id="faqCatalogTitle">全部知识库问答</strong><small>文档内容按主题合并为 <span id="faqPanelCount">106</span> 组主问，点击即可向小7提问。</small></div>
+      <button class="faq-catalog-close" id="faqCatalogClose" type="button" aria-label="关闭">×</button>
+    </div>
+    <div class="faq-search"><input id="faqSearchInput" placeholder="搜索报到、宿舍、食堂、快递、选课……" autocomplete="off"></div>
+    <div class="faq-list" id="faqList"></div>
+  </div>
+</div>
+
+<script>
+(()=>{
+  const total=Array.isArray(window.knowledgeBase)?window.knowledgeBase.length:(typeof knowledgeBase!=='undefined'?knowledgeBase.length:0);
+  ['kbCount','faqCount','faqPanelCount'].forEach(id=>{const el=document.getElementById(id);if(el)el.textContent=String(total)});
+  const catalog=document.getElementById('faqCatalog');
+  const openBtn=document.getElementById('faqCatalogBtn');
+  const closeBtn=document.getElementById('faqCatalogClose');
+  const search=document.getElementById('faqSearchInput');
+  const list=document.getElementById('faqList');
+  const getBase=()=>typeof knowledgeBase!=='undefined'&&Array.isArray(knowledgeBase)?knowledgeBase:[];
+  function render(query=''){
+    if(!list)return;
+    const q=String(query||'').trim().toLowerCase();
+    const rows=getBase().map((item,index)=>({item,index})).filter(({item})=>!q||[item.title,item.summary,...(item.questions||[])].join(' ').toLowerCase().includes(q));
+    list.innerHTML='';
+    if(!rows.length){const empty=document.createElement('div');empty.className='faq-empty';empty.textContent='没有找到相关问题，可以直接在AI输入框中提问。';list.append(empty);return;}
+    rows.forEach(({item,index})=>{
+      const btn=document.createElement('button');btn.type='button';btn.innerHTML=`<span class="faq-index">${index+1}</span><span class="faq-title"></span><span class="faq-arrow">›</span>`;
+      btn.querySelector('.faq-title').textContent=item.title;
+      btn.addEventListener('click',()=>{close();if(typeof openTab==='function')openTab('ai');setTimeout(()=>{if(typeof ask==='function')ask(item.title)},80)});
+      list.append(btn);
+    });
+  }
+  function open(){if(!catalog)return;catalog.hidden=false;document.body.classList.add('faq-open');render('');setTimeout(()=>search?.focus(),80)}
+  function close(){if(!catalog)return;catalog.hidden=true;document.body.classList.remove('faq-open');if(search)search.value=''}
+  openBtn?.addEventListener('click',open);
+  closeBtn?.addEventListener('click',close);
+  catalog?.addEventListener('click',e=>{if(e.target===catalog)close()});
+  search?.addEventListener('input',()=>render(search.value));
+  document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!catalog?.hidden)close()});
+})();
+</script>
+
+
+<script>
+(()=>{
+  const modal=document.getElementById('packingListModal');
+  const openBtn=document.getElementById('packingListOpen');
+  const closeBtn=document.getElementById('packingListClose');
+  let lastFocus=null;
+  function openList(){
+    if(!modal)return;
+    lastFocus=document.activeElement;
+    modal.hidden=false;
+    document.body.classList.add('packing-list-open');
+    setTimeout(()=>closeBtn?.focus(),40);
+  }
+  function closeList(){
+    if(!modal)return;
+    modal.hidden=true;
+    document.body.classList.remove('packing-list-open');
+    lastFocus?.focus?.();
+  }
+  openBtn?.addEventListener('click',openList);
+  closeBtn?.addEventListener('click',closeList);
+  modal?.addEventListener('click',event=>{if(event.target===modal)closeList()});
+  document.addEventListener('keydown',event=>{if(event.key==='Escape'&&!modal?.hidden)closeList()});
+})();
+</script>
+
+<script>
+(()=>{
+  const modal=document.getElementById('openingExperienceModal');
+  const openBtn=document.getElementById('openingExperienceOpen');
+  const closeBtn=document.getElementById('openingExperienceClose');
+  let lastFocus=null;
+  function openExperience(){
+    if(!modal)return;
+    lastFocus=document.activeElement;
+    modal.hidden=false;
+    document.body.classList.add('packing-list-open');
+    setTimeout(()=>closeBtn?.focus(),40);
+  }
+  function closeExperience(){
+    if(!modal)return;
+    modal.hidden=true;
+    document.body.classList.remove('packing-list-open');
+    lastFocus?.focus?.();
+  }
+  openBtn?.addEventListener('click',openExperience);
+  closeBtn?.addEventListener('click',closeExperience);
+  modal?.addEventListener('click',event=>{if(event.target===modal)closeExperience()});
+  document.addEventListener('keydown',event=>{if(event.key==='Escape'&&!modal?.hidden)closeExperience()});
+})();
+</script>
+
+
+<script>
+(()=>{
+  const modal=document.getElementById('packingListModal');
+  const copyBtn=document.getElementById('copyPackingList');
+  const imageBtn=document.getElementById('imagePackingList');
+  const shareBtn=document.getElementById('sharePackingList');
+  const status=document.getElementById('packingShareStatus');
+  function setStatus(text){if(status){status.textContent=text;setTimeout(()=>{if(status.textContent===text)status.textContent=''},2600)}}
+  function collect(){
+    const rows=[];
+    modal?.querySelectorAll('.packing-list-group').forEach(group=>{
+      const title=group.querySelector('h3')?.textContent.trim();
+      if(title)rows.push({type:'heading',text:title});
+      group.querySelectorAll('li').forEach(li=>{
+        const name=li.querySelector('.packing-item-name')?.textContent.trim()||'';
+        const note=li.querySelector('.packing-item-note')?.textContent.trim()||'';
+        rows.push({type:'item',text:'□ '+name+(note?'｜'+note:'')});
+      });
+    });
+    return rows;
+  }
+  function plainText(){
+    return ['小7｜准大一开学全清单','学姐个人经验+官网搜索｜仅供参考','',...collect().map(row=>row.type==='heading'?'\n【'+row.text+'】':row.text)].join('\n');
+  }
+  async function copyText(){
+    const text=plainText();
+    try{await navigator.clipboard.writeText(text)}catch(e){const t=document.createElement('textarea');t.value=text;document.body.append(t);t.select();document.execCommand('copy');t.remove()}
+    setStatus('清单已复制，可以发送给家长。');
+  }
+  function wrap(ctx,text,maxWidth){
+    const chars=Array.from(text);const lines=[];let line='';
+    chars.forEach(ch=>{const test=line+ch;if(ctx.measureText(test).width>maxWidth&&line){lines.push(line);line=ch}else line=test});
+    if(line)lines.push(line);return lines;
+  }
+  async function createImageBlob(){
+    const rows=collect(),width=1080,pad=72,maxWidth=width-pad*2;
+    const measure=document.createElement('canvas').getContext('2d');
+    let height=210;
+    rows.forEach(row=>{measure.font=row.type==='heading'?'700 36px sans-serif':'400 29px sans-serif';const lines=wrap(measure,row.text,maxWidth-(row.type==='item'?18:0));height+=lines.length*(row.type==='heading'?50:43)+(row.type==='heading'?30:16)});
+    height+=150;
+    const canvas=document.createElement('canvas');canvas.width=width;canvas.height=height;const ctx=canvas.getContext('2d');
+    ctx.fillStyle='#fffaf5';ctx.fillRect(0,0,width,height);
+    ctx.fillStyle='#971823';ctx.fillRect(0,0,width,18);
+    ctx.fillStyle='#2c2522';ctx.font='800 52px sans-serif';ctx.fillText('小7｜准大一开学全清单',pad,100);
+    ctx.fillStyle='#8e7d75';ctx.font='400 26px sans-serif';ctx.fillText('学姐个人经验+官网搜索｜仅供参考',pad,148);
+    let y=210;
+    rows.forEach(row=>{
+      if(row.type==='heading'){
+        y+=8;ctx.fillStyle='#971823';ctx.font='700 36px sans-serif';const lines=wrap(ctx,row.text,maxWidth);lines.forEach(line=>{ctx.fillText(line,pad,y);y+=50});y+=18;
+      }else{
+        ctx.fillStyle='#4d4541';ctx.font='400 29px sans-serif';const lines=wrap(ctx,row.text,maxWidth-18);lines.forEach((line,i)=>{ctx.fillText(line,pad+(i?18:0),y);y+=43});y+=12;
+      }
+    });
+    ctx.strokeStyle='#eaded5';ctx.beginPath();ctx.moveTo(pad,y+12);ctx.lineTo(width-pad,y+12);ctx.stroke();
+    ctx.fillStyle='#9a8b84';ctx.font='400 24px sans-serif';ctx.fillText('重要事项请以学校、学院或书院最新通知为准',pad,y+60);
+    return await new Promise(resolve=>canvas.toBlob(resolve,'image/png',.96));
+  }
+  async function downloadImage(){
+    imageBtn.disabled=true;setStatus('正在生成长图…');
+    try{const blob=await createImageBlob();const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download='小7-准大一开学全清单.png';a.click();setTimeout(()=>URL.revokeObjectURL(url),1500);setStatus('长图已生成。')}finally{imageBtn.disabled=false}
+  }
+  async function share(){
+    shareBtn.disabled=true;
+    try{
+      const blob=await createImageBlob();const file=new File([blob],'小7-准大一开学全清单.png',{type:'image/png'});
+      if(navigator.canShare?.({files:[file]})){await navigator.share({title:'准大一开学全清单',text:'给家长看的开学准备清单',files:[file]});setStatus('已打开系统分享。')}
+      else if(navigator.share){await navigator.share({title:'准大一开学全清单',text:plainText()});setStatus('已打开系统分享。')}
+      else{await copyText();setStatus('当前浏览器不支持直接分享，已复制清单。')}
+    }catch(e){if(e?.name!=='AbortError')setStatus('分享未完成，可使用“复制清单”或“生成长图”。')}finally{shareBtn.disabled=false}
+  }
+  copyBtn?.addEventListener('click',copyText);imageBtn?.addEventListener('click',downloadImage);shareBtn?.addEventListener('click',share);
+})();
+</script>
+
+
+<script>
+(()=>{
+  const root=document.documentElement;
+  const syncViewport=()=>{
+    const vv=window.visualViewport;
+    const h=Math.round(vv?vv.height:window.innerHeight);
+    root.style.setProperty('--viewport-h',h+'px');
+    const active=document.activeElement;
+    const isField=active&&(/^(INPUT|TEXTAREA)$/.test(active.tagName));
+    const keyboardLikely=Boolean(vv&&isField&&(window.innerHeight-vv.height>120));
+    document.body.classList.toggle('keyboard-open',keyboardLikely);
+  };
+  syncViewport();
+  window.addEventListener('resize',syncViewport,{passive:true});
+  window.addEventListener('orientationchange',()=>setTimeout(syncViewport,120),{passive:true});
+  window.visualViewport?.addEventListener('resize',syncViewport,{passive:true});
+  window.visualViewport?.addEventListener('scroll',syncViewport,{passive:true});
+  document.addEventListener('focusin',syncViewport);
+  document.addEventListener('focusout',()=>setTimeout(syncViewport,120));
+})();
+</script>
+
+</body>
+</html>
